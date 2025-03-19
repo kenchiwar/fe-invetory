@@ -3,7 +3,6 @@ import HomePage from "./pages/Home";
 import ReadPage from "./pages/Read";
 import NotFoundPage from "./pages/NotFound";
 import MainLayout from "./Components/Layout/MainLayout";
-
 const routes: RouteObject[] = [
   {
     path: "/",
