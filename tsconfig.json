@@ -26,7 +26,8 @@
       "@/*": ["src/*"],
       "@components/*": ["src/components/*"],
       "@assets/*": ["src/assets/*"],
-      "@pages/*": ["src/pages/*"]
+      "@pages/*": ["src/pages/*"],
+      "@redux/*" : ["src/redux/*"]
     }
   },
   "include": ["src"],
