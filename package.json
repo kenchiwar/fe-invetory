@@ -6,12 +6,13 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "lint": "eslint --fix --ignore-pattern .gitignore ", 
-      "_comment_lint": "xài thì chạy: npm run lint . ",
+    "lint": "eslint --fix --ignore-pattern .gitignore ",
+    "_comment_lint": "xài thì chạy: npm run lint . ",
     "preview": "vite preview"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.0.14",
+    "antd": "^5.24.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-helmet-async": "^2.0.5",
