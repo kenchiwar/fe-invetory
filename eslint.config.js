@@ -8,7 +8,7 @@ export default tseslint.config(
   { ignores: ["dist"] }, // Bỏ qua thư mục "dist" khi chạy ESLint
   {
     extends: [js.configs.recommended, ...tseslint.configs.recommended], // Kế thừa các cấu hình đề xuất của ESLint và TypeScript
-    files: ["**/*.{ts,tsx}"], // Chỉ kiểm tra các file TypeScript (*.ts, *.tsx)
+    files: ["**/*.{ts,tsx,jsx}"], // Chỉ kiểm tra các file TypeScript (*.ts, *.tsx)
     languageOptions: {
       ecmaVersion: 2020, // Sử dụng phiên bản ECMAScript 2020
       globals: globals.browser, // Định nghĩa các biến toàn cục của trình duyệt
