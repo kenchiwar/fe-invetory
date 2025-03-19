@@ -1,58 +1,59 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { Outlet, Link, useLocation } from "react-router-dom"
-import { Helmet } from "react-helmet-async"
-import { Layout, Menu, Button, Drawer, Space, Typography, Divider } from "antd"
-import { HomeOutlined, ReadOutlined, MenuOutlined } from "@ant-design/icons"
+import { useState, useEffect } from "react";
+import { Outlet, Link, useLocation } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
+import { Layout, Menu, Button, Drawer, Space, Typography, Divider } from "antd";
+import { HomeOutlined, ReadOutlined, MenuOutlined } from "@ant-design/icons";
 
-const { Header, Content, Footer } = Layout
+const { Header, Content, Footer } = Layout;
 
-function MainLayout() {
-  const [mobileView, setMobileView] = useState(false)
-  const [drawerOpen, setDrawerOpen] = useState(false)
-  const location = useLocation()
+function MainLayout () {
+  const [mobileView, setMobileView] = useState(false);
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const location = useLocation();
 
   // Determine which menu item should be active based on current path
   const getSelectedKey = () => {
-    const path = location.pathname
-    if (path === "/") return ["home"]
-    if (path === "/read") return ["read"]
-    return []
-  }
+    const path = location.pathname;
+
+    if (path === "/") return ["home"];
+    if (path === "/read") return ["read"];
+    return [];
+  };
 
   // Check if we're in mobile view
   useEffect(() => {
     const checkMobile = () => {
-      setMobileView(window.innerWidth < 768)
-    }
+      setMobileView(window.innerWidth < 768);
+    };
 
-    checkMobile()
-    window.addEventListener("resize", checkMobile)
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
 
     return () => {
-      window.removeEventListener("resize", checkMobile)
-    }
-  }, [])
+      window.removeEventListener("resize", checkMobile);
+    };
+  }, []);
 
   // Menu items configuration
   const menuItems = [
     {
       key: "home",
       icon: <HomeOutlined />,
-      label: <Link to="/">Home</Link>,
+      label: <Link to="/">Home</Link>
     },
     {
       key: "read",
       icon: <ReadOutlined />,
-      label: <Link to="/read">Read</Link>,
-    },
-  ]
+      label: <Link to="/read">Read</Link>
+    }
+  ];
 
   // Toggle drawer for mobile view
   const toggleDrawer = () => {
-    setDrawerOpen(!drawerOpen)
-  }
+    setDrawerOpen(!drawerOpen);
+  };
 
   return (
     <Layout className="tw:min-h-screen">
@@ -105,8 +106,8 @@ function MainLayout() {
         </Space>
       </Footer>
     </Layout>
-  )
+  );
 }
 
-export default MainLayout
+export default MainLayout;
 

@@ -2,7 +2,7 @@ import { RouteObject } from "react-router-dom";
 import HomePage from "./pages/Home";
 import ReadPage from "./pages/Read";
 import NotFoundPage from "./pages/NotFound";
-import MainLayout from "./Components/Layout/MainLayout";
+import MainLayout from "@components/Layout/MainLayout";
 const routes: RouteObject[] = [
   {
     path: "/",

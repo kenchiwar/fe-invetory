@@ -1,5 +1,5 @@
-import { Helmet } from "react-helmet-async"
-import { Button, Typography, Card, Row, Col, Tag, Carousel, Rate, Badge, Space } from "antd"
+import { Helmet } from "react-helmet-async";
+import { Button, Typography, Card, Row, Col, Tag, Carousel, Rate, Badge, Space } from "antd";
 import {
   ShoppingCartOutlined,
   PhoneOutlined,
@@ -8,13 +8,13 @@ import {
   RocketOutlined,
   StarOutlined,
   EnvironmentOutlined,
-  ClockCircleOutlined,
-} from "@ant-design/icons"
+  ClockCircleOutlined
+} from "@ant-design/icons";
 
-const { Title, Paragraph, Text } = Typography
-const { Meta } = Card
+const { Title, Paragraph, Text } = Typography;
+const { Meta } = Card;
 
-export default function HomePage() {
+export default function HomePage () {
   // Sample products data
   const featuredProducts = [
     {
@@ -24,7 +24,7 @@ export default function HomePage() {
       price: 120000,
       originalPrice: 150000,
       image: "/placeholder.svg?height=200&width=300",
-      rating: 5,
+      rating: 5
     },
     {
       id: 2,
@@ -33,7 +33,7 @@ export default function HomePage() {
       price: 800000,
       originalPrice: 950000,
       image: "/placeholder.svg?height=200&width=300",
-      rating: 4.5,
+      rating: 4.5
     },
     {
       id: 3,
@@ -42,7 +42,7 @@ export default function HomePage() {
       price: 2500000,
       originalPrice: 2800000,
       image: "/placeholder.svg?height=200&width=300",
-      rating: 4.8,
+      rating: 4.8
     },
     {
       id: 4,
@@ -51,9 +51,9 @@ export default function HomePage() {
       price: 1500000,
       originalPrice: 1800000,
       image: "/placeholder.svg?height=200&width=300",
-      rating: 4.7,
-    },
-  ]
+      rating: 4.7
+    }
+  ];
 
   // Sample categories
   const categories = [
@@ -61,39 +61,39 @@ export default function HomePage() {
       title: "Danh thiếp",
       icon: <PrinterOutlined />,
       image: "/placeholder.svg?height=100&width=100",
-      color: "#1677ff",
+      color: "#1677ff"
     },
     {
       title: "Tờ rơi & Brochure",
       icon: <PrinterOutlined />,
       image: "/placeholder.svg?height=100&width=100",
-      color: "#52c41a",
+      color: "#52c41a"
     },
     {
       title: "Catalogue",
       icon: <PrinterOutlined />,
       image: "/placeholder.svg?height=100&width=100",
-      color: "#fa8c16",
+      color: "#fa8c16"
     },
     {
       title: "Hộp & Bao bì",
       icon: <PrinterOutlined />,
       image: "/placeholder.svg?height=100&width=100",
-      color: "#eb2f96",
+      color: "#eb2f96"
     },
     {
       title: "Tem nhãn",
       icon: <PrinterOutlined />,
       image: "/placeholder.svg?height=100&width=100",
-      color: "#722ed1",
+      color: "#722ed1"
     },
     {
       title: "Lịch & Thiệp",
       icon: <PrinterOutlined />,
       image: "/placeholder.svg?height=100&width=100",
-      color: "#faad14",
-    },
-  ]
+      color: "#faad14"
+    }
+  ];
 
   // Sample testimonials
   const testimonials = [
@@ -102,27 +102,27 @@ export default function HomePage() {
         "Dịch vụ in ấn chuyên nghiệp, chất lượng sản phẩm tuyệt vời. Tôi rất hài lòng với danh thiếp được in tại đây.",
       author: "Nguyễn Văn A",
       company: "Công ty ABC",
-      rating: 5,
+      rating: 5
     },
     {
       content:
         "Đặt in catalogue cho công ty và nhận được sản phẩm đúng hẹn, chất lượng vượt mong đợi. Sẽ tiếp tục sử dụng dịch vụ.",
       author: "Trần Thị B",
       company: "Doanh nghiệp XYZ",
-      rating: 5,
+      rating: 5
     },
     {
       content: "Giá cả hợp lý, chất lượng tốt, giao hàng đúng hẹn. Đã sử dụng dịch vụ nhiều lần và luôn hài lòng.",
       author: "Lê Văn C",
       company: "Cửa hàng DEF",
-      rating: 4,
-    },
-  ]
+      rating: 4
+    }
+  ];
 
   // Format price to VND
   const formatPrice = (price) => {
-    return new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" }).format(price)
-  }
+    return new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" }).format(price);
+  };
 
   return (
     <>
@@ -141,8 +141,8 @@ export default function HomePage() {
             <div
               className="tw:absolute tw:inset-0 tw:bg-cover tw:bg-center"
               style={{
-                backgroundImage: `url('/placeholder.svg?height=400&width=1200')`,
-                filter: "brightness(0.7)",
+                backgroundImage: "url('/placeholder.svg?height=400&width=1200')",
+                filter: "brightness(0.7)"
               }}
             ></div>
             <div className="tw:absolute tw:inset-0 tw:flex tw:flex-col tw:justify-center tw:items-center tw:text-white tw:p-8 tw:text-center">
@@ -169,8 +169,8 @@ export default function HomePage() {
             <div
               className="tw:absolute tw:inset-0 tw:bg-cover tw:bg-center"
               style={{
-                backgroundImage: `url('/placeholder.svg?height=400&width=1200')`,
-                filter: "brightness(0.7)",
+                backgroundImage: "url('/placeholder.svg?height=400&width=1200')",
+                filter: "brightness(0.7)"
               }}
             ></div>
             <div className="tw:absolute tw:inset-0 tw:flex tw:flex-col tw:justify-center tw:items-center tw:text-white tw:p-8 tw:text-center">
@@ -259,7 +259,7 @@ export default function HomePage() {
                     <Rate disabled defaultValue={product.rating} />,
                     <Button type="primary" icon={<ShoppingCartOutlined />}>
                       Đặt hàng
-                    </Button>,
+                    </Button>
                   ]}
                 >
                   <Meta
@@ -400,8 +400,8 @@ export default function HomePage() {
         <div
           className="tw:absolute tw:inset-0 tw:bg-cover tw:bg-center"
           style={{
-            backgroundImage: `url('/placeholder.svg?height=300&width=1200')`,
-            filter: "brightness(0.4)",
+            backgroundImage: "url('/placeholder.svg?height=300&width=1200')",
+            filter: "brightness(0.4)"
           }}
         ></div>
         <div className="tw:relative tw:text-center tw:text-white">
@@ -449,6 +449,6 @@ export default function HomePage() {
         </Row>
       </div>
     </>
-  )
+  );
 }
 
