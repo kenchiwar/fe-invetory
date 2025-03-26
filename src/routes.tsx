@@ -6,7 +6,7 @@ import NotFoundPage from "@pages/NotFound";
 //this use code  Code Splitting để load dử liệu page ít lại tra gg đi
 const HomePage = lazy(() => import("@pages/Home"));
 const ReadPage = lazy(() => import("@pages/Read"));
-
+const RouterQuery = lazy(()=> import("@pages/RouterQuery"));
 //end this use code 
 
 const routes: RouteObject[] = [
@@ -26,6 +26,12 @@ const routes: RouteObject[] = [
         path: "read",
         element: (
             <ReadPage />
+        ),
+      },
+       {
+        path: "route",
+        element: (
+            <RouterQuery />
         ),
       },
     ],
