@@ -1,7 +1,8 @@
 import { Helmet } from "react-helmet-async";
 import { Space, Typography } from "antd";
 import { useAppSelector } from "@redux/store";
-import CounterButtons from "@/Components/Layout/TestRedux/CounterButtons";
+import CounterButtons from "@components/Layout/TestRedux/CounterButtons";
+import Chan from "@components/Metmoi/Chan";
 export default function HomePage () {
   const value = useAppSelector((state) => state.test.value);
 

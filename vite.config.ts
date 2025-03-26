@@ -11,11 +11,12 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "./src"),
+     
       "@assets": path.resolve(__dirname, "./src/assets"),
       "@components": path.resolve(__dirname, "./src/components"),
       "@redux" :  path.resolve(__dirname,"./src/redux"),
-      "@pages" : path.resolve(__dirname,"./src/pages")
+      "@pages" : path.resolve(__dirname,"./src/pages"),
+        "@": path.resolve(__dirname, "./src")
     },
   },
   //end setting alias

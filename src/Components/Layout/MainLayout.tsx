@@ -1,14 +1,15 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { Outlet, Link, useLocation } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { Layout, Menu, Button, Drawer, Space, Typography, Divider } from "antd";
 import { HomeOutlined, ReadOutlined, MenuOutlined } from "@ant-design/icons";
+import Loading from "@components/Loading";
 
 const { Header, Content, Footer } = Layout;
 
-function MainLayout () {
+function MainLayout() {
   const [mobileView, setMobileView] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const location = useLocation();
@@ -41,13 +42,13 @@ function MainLayout () {
     {
       key: "home",
       icon: <HomeOutlined />,
-      label: <Link to="/">Home</Link>
+      label: <Link to="/">Home</Link>,
     },
     {
       key: "read",
       icon: <ReadOutlined />,
-      label: <Link to="/read">Read</Link>
-    }
+      label: <Link to="/read">Read</Link>,
+    },
   ];
 
   // Toggle drawer for mobile view
@@ -63,7 +64,6 @@ function MainLayout () {
         <meta property="og:description" content="Trang chủ" />
         <meta property="og:type" content="website" />
       </Helmet>
-
       <Header
         className="tw:flex tw:items-center tw:justify-between"
         style={{ padding: mobileView ? "0 16px" : "0 50px" }}
@@ -75,7 +75,12 @@ function MainLayout () {
         </div>
 
         {mobileView ? (
-          <Button type="text" icon={<MenuOutlined />} onClick={toggleDrawer} style={{ color: "white" }} />
+          <Button
+            type="text"
+            icon={<MenuOutlined />}
+            onClick={toggleDrawer}
+            style={{ color: "white" }}
+          />
         ) : (
           <Menu
             theme="dark"
@@ -88,13 +93,26 @@ function MainLayout () {
       </Header>
 
       {/* Mobile Drawer */}
-      <Drawer title="Menu" placement="right" onClose={toggleDrawer} open={drawerOpen} width={250}>
-        <Menu mode="vertical" selectedKeys={getSelectedKey()} items={menuItems} style={{ border: "none" }} />
+      <Drawer
+        title="Menu"
+        placement="right"
+        onClose={toggleDrawer}
+        open={drawerOpen}
+        width={250}
+      >
+        <Menu
+          mode="vertical"
+          selectedKeys={getSelectedKey()}
+          items={menuItems}
+          style={{ border: "none" }}
+        />
       </Drawer>
 
       <Content className="tw:p-4 tw:mx-auto" style={{ maxWidth: 1600 }}>
         <div className="tw:bg-white tw:p-4 tw:min-h-[280px]">
-          <Outlet />
+          <Suspense fallback={<Loading />}>
+            <Outlet />
+          </Suspense>
         </div>
       </Content>
 
@@ -102,7 +120,9 @@ function MainLayout () {
         <Divider />
         <Space direction="vertical" size="small">
           <Typography.Text>© 2025 - My React App 🚀</Typography.Text>
-          <Typography.Text type="secondary">Built with React, Vite, and Ant Design</Typography.Text>
+          <Typography.Text type="secondary">
+            Built with React, Vite, and Ant Design
+          </Typography.Text>
         </Space>
       </Footer>
     </Layout>
@@ -110,4 +130,3 @@ function MainLayout () {
 }
 
 export default MainLayout;
-
