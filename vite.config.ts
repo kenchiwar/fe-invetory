@@ -22,5 +22,17 @@ export default defineConfig({
   //end setting alias
   plugins: [react(),
     tailwindcss()
-  ]
+  ],
+  //tạo api backend đừng để bị cors  'Access-Control-Allow-Origin' header 
+   server: {
+    proxy: {
+      // Proxy all requests starting with /api to your backend
+      "/api": {
+        target: "http://localhost:64489",
+        changeOrigin: true,
+        // Uncomment if your API doesn't have /api in the actual URL
+        // rewrite: (path) => path.replace(/^\/api/, '')
+      },
+    },
+  },
 });

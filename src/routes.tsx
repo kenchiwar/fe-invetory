@@ -7,6 +7,7 @@ import NotFoundPage from "@pages/NotFound";
 const HomePage = lazy(() => import("@pages/Home"));
 const ReadPage = lazy(() => import("@pages/Read"));
 const RouterQuery = lazy(() => import("@pages/RouterQuery"));
+const BrandList = lazy(()=> import("@pages/BrandList"));
 //end this use code
 
 const routes: RouteObject[] = [
@@ -25,6 +26,10 @@ const routes: RouteObject[] = [
       {
         path: "route",
         element: <RouterQuery />,
+      },
+       {
+        path: "BrandList",
+        element: <BrandList />,
       },
     ],
   },
