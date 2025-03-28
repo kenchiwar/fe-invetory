@@ -1,46 +1,36 @@
-import { RouteObject  } from "react-router-dom";
+import { RouteObject } from "react-router-dom";
 import { lazy } from "react";
-import { ROUTES } from "@/constants/endpoint"
+import { ROUTES } from "@/constants/endpoint";
 import MainLayout from "@components/Layout/MainLayout";
 import NotFoundPage from "@pages/NotFound";
 //this use code  Code Splitting để load dử liệu page ít lại tra gg đi
 const HomePage = lazy(() => import("@pages/Home"));
 const ReadPage = lazy(() => import("@pages/Read"));
-const RouterQuery = lazy(()=> import("@pages/RouterQuery"));
-//end this use code 
+const RouterQuery = lazy(() => import("@pages/RouterQuery"));
+//end this use code
 
 const routes: RouteObject[] = [
   {
     path: ROUTES.APP_ROOT,
-    element: (
-        <MainLayout />
-    ),
+    element: <MainLayout />,
     children: [
       {
         index: true,
-        element: (
-            <HomePage />
-        ),
+        element: <HomePage />,
       },
       {
         path: "read",
-        element: (
-            <ReadPage />
-        ),
+        element: <ReadPage />,
       },
-       {
+      {
         path: "route",
-        element: (
-            <RouterQuery />
-        ),
+        element: <RouterQuery />,
       },
     ],
   },
   {
     path: "*",
-    element: (
-        <NotFoundPage />
-    ),
+    element: <NotFoundPage />,
   },
 ];
 
