@@ -1,52 +1,68 @@
 import { createSlice, createAsyncThunk, type PayloadAction } from "@reduxjs/toolkit"
+import type { ApiState } from "../types"
 import brandService, { type Brand, type BrandDto } from "@/api/brand-service"
-
-// Simplified state interface
-interface BrandState {
-  brandList: Brand[]
-  selectedBrand: Brand | null
-  loading: boolean
-  error: string | null
-}
+import { setLoading, clearLoading } from "./loadingReducer"
 
 // Initial state
-const initialState: BrandState = {
+const initialState: ApiState<Brand> = {
   brandList: [],
   selectedBrand: null,
-  loading: false,
+  loading: "None",
   error: null,
 }
 
 // Async thunks
-export const fetchBrands = createAsyncThunk("brands/fetchAll", async (_, { rejectWithValue }) => {
+export const fetchBrands = createAsyncThunk("brands/fetchAll", async (_, { dispatch, rejectWithValue }) => {
   try {
-    return await brandService.getAllBrands()
+    dispatch(setLoading({ status: "All", entityType: "brand" }))
+    const result = await brandService.getAllBrands()
+    dispatch(clearLoading())
+    return result
   } catch (error) {
+    dispatch(clearLoading())
     return rejectWithValue(error instanceof Error ? error.message : "Failed to fetch brands")
   }
 })
 
-export const fetchBrandById = createAsyncThunk("brands/fetchById", async (id: number, { rejectWithValue }) => {
-  try {
-    return await brandService.getBrandById(id)
-  } catch (error) {
-    return rejectWithValue(error instanceof Error ? error.message : "Failed to fetch brand")
-  }
-})
+export const fetchBrandById = createAsyncThunk(
+  "brands/fetchById",
+  async (id: number, { dispatch, rejectWithValue }) => {
+    try {
+      dispatch(setLoading({ status: "Get", entityType: "brand" }))
+      const result = await brandService.getBrandById(id)
+      dispatch(clearLoading())
+      return result
+    } catch (error) {
+      dispatch(clearLoading())
+      return rejectWithValue(error instanceof Error ? error.message : "Failed to fetch brand")
+    }
+  },
+)
 
-export const saveBrand = createAsyncThunk("brands/save", async (brand: BrandDto, { rejectWithValue }) => {
+export const saveBrand = createAsyncThunk("brands/save", async (brand: BrandDto, { dispatch, rejectWithValue }) => {
   try {
-    return await brandService.saveBrand(brand)
+    dispatch(setLoading({ status: "Save", entityType: "brand" }))
+    const result = await brandService.saveBrand(brand)
+    // After saving, refresh the list
+    await brandService.getAllBrands()
+    dispatch(clearLoading())
+    return result
   } catch (error) {
+    dispatch(clearLoading())
     return rejectWithValue(error instanceof Error ? error.message : "Failed to save brand")
   }
 })
 
-export const deleteBrand = createAsyncThunk("brands/delete", async (id: number, { rejectWithValue }) => {
+export const deleteBrand = createAsyncThunk("brands/delete", async (id: number, { dispatch, rejectWithValue }) => {
   try {
+    dispatch(setLoading({ status: "Delete", entityType: "brand" }))
     await brandService.deleteBrand(id)
+    // After deleting, refresh the list
+    await brandService.getAllBrands()
+    dispatch(clearLoading())
     return id
   } catch (error) {
+    dispatch(clearLoading())
     return rejectWithValue(error instanceof Error ? error.message : "Failed to delete brand")
   }
 })
@@ -65,73 +81,50 @@ const brandSlice = createSlice({
   },
   extraReducers: (builder) => {
     // Fetch all brands
-    builder.addCase(fetchBrands.pending, (state) => {
-      state.loading = true
-      state.error = null
-    })
     builder.addCase(fetchBrands.fulfilled, (state, action: PayloadAction<Brand[]>) => {
-      state.loading = false
       state.brandList = action.payload
     })
     builder.addCase(fetchBrands.rejected, (state, action) => {
-      state.loading = false
       state.error = action.payload as string
     })
 
     // Fetch brand by ID
-    builder.addCase(fetchBrandById.pending, (state) => {
-      state.loading = true
-      state.error = null
-    })
     builder.addCase(fetchBrandById.fulfilled, (state, action: PayloadAction<Brand>) => {
-      state.loading = false
       state.selectedBrand = action.payload
     })
     builder.addCase(fetchBrandById.rejected, (state, action) => {
-      state.loading = false
       state.error = action.payload as string
     })
 
-    // Save brand (handles both create and update)
-    builder.addCase(saveBrand.pending, (state) => {
-      state.loading = true
-      state.error = null
-    })
+    // Save brand
     builder.addCase(saveBrand.fulfilled, (state, action: PayloadAction<Brand>) => {
-      state.loading = false
+      // Update the selected brand
+      state.selectedBrand = action.payload
 
-      // Check if this is an update or create
+      // Update the list if the brand already exists
       const index = state.brandList.findIndex((brand) => brand.id === action.payload.id)
-
       if (index !== -1) {
-        // Update existing brand
         state.brandList[index] = action.payload
       } else {
-        // Add new brand
+        // Add to the list if it's new
         state.brandList.push(action.payload)
       }
-
-      state.selectedBrand = action.payload
     })
     builder.addCase(saveBrand.rejected, (state, action) => {
-      state.loading = false
       state.error = action.payload as string
     })
 
     // Delete brand
-    builder.addCase(deleteBrand.pending, (state) => {
-      state.loading = true
-      state.error = null
-    })
     builder.addCase(deleteBrand.fulfilled, (state, action: PayloadAction<number>) => {
-      state.loading = false
+      // Remove from the list
       state.brandList = state.brandList.filter((brand) => brand.id !== action.payload)
+
+      // Clear selected brand if it was deleted
       if (state.selectedBrand && state.selectedBrand.id === action.payload) {
         state.selectedBrand = null
       }
     })
     builder.addCase(deleteBrand.rejected, (state, action) => {
-      state.loading = false
       state.error = action.payload as string
     })
   },
@@ -139,4 +132,5 @@ const brandSlice = createSlice({
 
 export const { setSelectedBrand, clearError } = brandSlice.actions
 export default brandSlice.reducer
+
 

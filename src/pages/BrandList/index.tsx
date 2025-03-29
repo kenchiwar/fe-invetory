@@ -1,7 +1,7 @@
 "use client"
 
-
-import { useState, useEffect } from "react"
+import type React from "react"
+import { useState, useEffect, useCallback } from "react"
 import {
   Table,
   Button,
@@ -29,98 +29,140 @@ import {
   SortDescendingOutlined,
 } from "@ant-design/icons"
 import type { ColumnsType } from "antd/es/table"
+import type { TablePaginationConfig } from "antd/es/table"
+
 import { useAppDispatch, useAppSelector } from "@/redux/store"
 import { fetchBrands, saveBrand, deleteBrand, setSelectedBrand } from "@/redux/reducers/brandReducer"
 import type { Brand, BrandDto } from "@/api/brand-service"
 import brandService from "@/api/brand-service"
 import { SortDirection } from "@/api/query-builder"
 
+interface SortState {
+  field: string
+  direction: SortDirection
+}
+
 const BrandListPage: React.FC = () => {
+  // Redux hooks
   const dispatch = useAppDispatch()
   const { brandList, selectedBrand, error } = useAppSelector((state) => state.brands)
   const { status: loadingStatus, entityType } = useAppSelector((state) => state.loading)
 
   const isLoading = entityType === "brand" && loadingStatus !== "None"
 
+  // Local state
   const [searchText, setSearchText] = useState<string>("")
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
   const [isEditing, setIsEditing] = useState<boolean>(false)
   const [useCache, setUseCache] = useState<boolean>(true)
-  const [sortField, setSortField] = useState<string>("brandName")
-  const [sortDirection, setSortDirection] = useState<SortDirection>(SortDirection.ASC)
-  const [currentPage, setCurrentPage] = useState<number>(1)
-  const [pageSize, setPageSize] = useState<number>(5)
-  const [form] = Form.useForm()
+  const [sort, setSort] = useState<SortState>({
+    field: "brandName",
+    direction: SortDirection.ASC,
+  })
+  const [pagination, setPagination] = useState<{
+    current: number
+    pageSize: number
+  }>({
+    current: 1,
+    pageSize: 5,
+  })
 
+  // Form instance
+  const [form] = Form.useForm<{
+    brandCode: string
+    brandName: string
+  }>()
+
+  // Fetch data on component mount
   useEffect(() => {
     fetchData()
-  }, [dispatch])
+  }, [])
 
+  // Show error messages
   useEffect(() => {
     if (error) {
       message.error(error)
     }
   }, [error])
 
-  const fetchData = async () => {
+  // Fetch brands data
+  const fetchData = useCallback(async (): Promise<void> => {
     try {
       await dispatch(fetchBrands()).unwrap()
     } catch (error) {
       console.error("Error fetching data:", error)
       message.error("Failed to fetch brands")
     }
-  }
+  }, [dispatch])
 
-  const handleRefresh = () => {
+  // Refresh data
+  const handleRefresh = useCallback((): void => {
     setUseCache(false)
     fetchData()
     message.success("Data refreshed from server")
-  }
+  }, [fetchData])
 
-  const handleClearCache = () => {
+  // Clear cache
+  const handleClearCache = useCallback((): void => {
     brandService.clearBrandCache()
     message.success("Cache cleared")
     fetchData()
-  }
+  }, [fetchData])
 
-  const handleSearch = (value: string) => {
+  // Handle search input change
+  const handleSearch = useCallback((value: string): void => {
     setSearchText(value)
-  }
+  }, [])
 
-  const handleSort = (field: string) => {
-    if (field === sortField) {
-      // Toggle direction if same field
-      setSortDirection(sortDirection === SortDirection.ASC ? SortDirection.DESC : SortDirection.ASC)
-    } else {
-      // Set new field and default to ASC
-      setSortField(field)
-      setSortDirection(SortDirection.ASC)
-    }
-  }
+  // Handle sorting
+  const handleSort = useCallback((field: string): void => {
+    setSort((prevSort) => {
+      if (prevSort.field === field) {
+        // Toggle direction if same field
+        return {
+          ...prevSort,
+          direction: prevSort.direction === SortDirection.ASC ? SortDirection.DESC : SortDirection.ASC,
+        }
+      } else {
+        // Set new field and default to ASC
+        return {
+          field,
+          direction: SortDirection.ASC,
+        }
+      }
+    })
+  }, [])
 
-  const showAddModal = () => {
+  // Show add modal
+  const showAddModal = useCallback((): void => {
     form.resetFields()
     setIsEditing(false)
     dispatch(setSelectedBrand(null))
     setIsModalVisible(true)
-  }
+  }, [dispatch, form])
 
-  const showEditModal = (brand: Brand) => {
-    form.setFieldsValue({
-      brandCode: brand.brandCode,
-      brandName: brand.brandName,
-    })
-    setIsEditing(true)
-    dispatch(setSelectedBrand(brand))
-    setIsModalVisible(true)
-  }
+  // Show edit modal
+  const showEditModal = useCallback(
+    (brand: Brand): void => {
+      form.setFieldsValue({
+        brandCode: brand.brandCode,
+        brandName: brand.brandName,
+      })
+      setIsEditing(true)
+      dispatch(setSelectedBrand(brand))
+      setIsModalVisible(true)
+    },
+    [dispatch, form],
+  )
 
-  const handleCancel = () => {
+  // Handle modal cancel
+  const handleCancel = useCallback((): void => {
     setIsModalVisible(false)
     dispatch(setSelectedBrand(null))
-  }
+  }, [dispatch])
 
-  const handleSubmit = async () => {
+  // Handle form submission
+  const handleSubmit = useCallback(async (): Promise<void> => {
     try {
       const values = await form.validateFields()
 
@@ -142,35 +184,43 @@ const BrandListPage: React.FC = () => {
       console.error("Failed to save brand:", error)
       message.error("Failed to save brand")
     }
-  }
+  }, [dispatch, form, isEditing, selectedBrand, fetchData])
 
-  const handleDelete = (id: number) => {
-    Modal.confirm({
-      title: "Are you sure you want to delete this brand?",
-      content: "This action cannot be undone.",
-      okText: "Yes",
-      okType: "danger",
-      cancelText: "No",
-      onOk: async () => {
-        try {
-          await dispatch(deleteBrand(id)).unwrap()
-          message.success("Brand deleted successfully")
+  // Handle brand deletion
+  const handleDelete = useCallback(
+    (id: number): void => {
+      Modal.confirm({
+        title: "Are you sure you want to delete this brand?",
+        content: "This action cannot be undone.",
+        okText: "Yes",
+        okType: "danger",
+        cancelText: "No",
+        onOk: async () => {
+          try {
+            await dispatch(deleteBrand(id)).unwrap()
+            message.success("Brand deleted successfully")
 
-          // Refresh the data
-          fetchData()
-        } catch (error) {
-          console.error("Failed to delete brand:", error)
-          message.error("Failed to delete brand")
-        }
-      },
+            // Refresh the data
+            fetchData()
+          } catch (error) {
+            console.error("Failed to delete brand:", error)
+            message.error("Failed to delete brand")
+          }
+        },
+      })
+    },
+    [dispatch, fetchData],
+  )
+
+  // Handle table pagination change
+  const handleTableChange = useCallback((tablePagination: TablePaginationConfig): void => {
+    setPagination({
+      current: tablePagination.current || 1,
+      pageSize: tablePagination.pageSize || 5,
     })
-  }
+  }, [])
 
-  const handleTableChange = (pagination: any) => {
-    setCurrentPage(pagination.current)
-    setPageSize(pagination.pageSize)
-  }
-
+  // Filter brands based on search text
   const filteredBrands = brandList.filter(
     (brand) =>
       brand.brandName.toLowerCase().includes(searchText.toLowerCase()) ||
@@ -179,17 +229,18 @@ const BrandListPage: React.FC = () => {
 
   // Sort brands based on current sort settings
   const sortedBrands = [...filteredBrands].sort((a, b) => {
-    const aValue = a[sortField as keyof Brand]
-    const bValue = b[sortField as keyof Brand]
+    const aValue = a[sort.field as keyof Brand]
+    const bValue = b[sort.field as keyof Brand]
 
     if (typeof aValue === "string" && typeof bValue === "string") {
-      return sortDirection === SortDirection.ASC ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue)
+      return sort.direction === SortDirection.ASC ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue)
     }
 
     // Default comparison for non-string values
-    return sortDirection === SortDirection.ASC ? (aValue > bValue ? 1 : -1) : bValue > aValue ? 1 : -1
+    return sort.direction === SortDirection.ASC ? (aValue > bValue ? 1 : -1) : bValue > aValue ? 1 : -1
   })
 
+  // Table columns configuration
   const columns: ColumnsType<Brand> = [
     {
       title: (
@@ -199,8 +250,8 @@ const BrandListPage: React.FC = () => {
             type="text"
             size="small"
             icon={
-              sortField === "brandCode" ? (
-                sortDirection === SortDirection.ASC ? (
+              sort.field === "brandCode" ? (
+                sort.direction === SortDirection.ASC ? (
                   <SortAscendingOutlined />
                 ) : (
                   <SortDescendingOutlined />
@@ -224,8 +275,8 @@ const BrandListPage: React.FC = () => {
             type="text"
             size="small"
             icon={
-              sortField === "brandName" ? (
-                sortDirection === SortDirection.ASC ? (
+              sort.field === "brandName" ? (
+                sort.direction === SortDirection.ASC ? (
                   <SortAscendingOutlined />
                 ) : (
                   <SortDescendingOutlined />
@@ -254,8 +305,8 @@ const BrandListPage: React.FC = () => {
             type="text"
             size="small"
             icon={
-              sortField === "createdDate" ? (
-                sortDirection === SortDirection.ASC ? (
+              sort.field === "createdDate" ? (
+                sort.direction === SortDirection.ASC ? (
                   <SortAscendingOutlined />
                 ) : (
                   <SortDescendingOutlined />
@@ -270,7 +321,7 @@ const BrandListPage: React.FC = () => {
       ),
       dataIndex: "createdDate",
       key: "createdDate",
-      render: (text) => new Date(text).toLocaleString(),
+      render: (text: string) => new Date(text).toLocaleString(),
     },
     {
       title: "Updated By",
@@ -281,12 +332,12 @@ const BrandListPage: React.FC = () => {
       title: "Updated Date",
       dataIndex: "updatedDate",
       key: "updatedDate",
-      render: (text) => new Date(text).toLocaleString(),
+      render: (text: string) => new Date(text).toLocaleString(),
     },
     {
       title: "Actions",
       key: "actions",
-      render: (_, record) => (
+      render: (_, record: Brand) => (
         <Space size="middle">
           <Button
             type="primary"
@@ -310,7 +361,7 @@ const BrandListPage: React.FC = () => {
   ]
 
   // Render skeleton when loading all data
-  const renderSkeleton = () => (
+  const renderSkeleton = (): JSX.Element => (
     <>
       <Skeleton active paragraph={{ rows: 1 }} className="tw:mb-6" />
       <Row gutter={[16, 16]} className="tw:mb-6">
@@ -372,14 +423,10 @@ const BrandListPage: React.FC = () => {
             dataSource={sortedBrands}
             rowKey="id"
             pagination={{
-              current: currentPage,
-              pageSize: pageSize,
+              current: pagination.current,
+              pageSize: pagination.pageSize,
               showSizeChanger: true,
               showTotal: (total) => `Total ${total} brands`,
-              onChange: (page, pageSize) => {
-                setCurrentPage(page)
-                setPageSize(pageSize || 5)
-              },
             }}
             className="tw:w-full"
             loading={loadingStatus === "Get"}
@@ -418,4 +465,4 @@ const BrandListPage: React.FC = () => {
   )
 }
 
-export default BrandListPage;
+export default BrandListPage
