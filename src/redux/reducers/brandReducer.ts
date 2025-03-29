@@ -3,13 +3,21 @@ import type { ApiState } from "../types"
 import brandService, { type Brand, type BrandDto } from "@/api/brand-service"
 import { setLoading, clearLoading } from "./loadingReducer"
 
+
+
+// Cập nhật interface
+interface BrandApiState<T> extends ApiState {
+  brandList: T[],
+  selectedBrand: T | null,
+}
 // Initial state
-const initialState: ApiState<Brand> = {
-  brandList: [],
-  selectedBrand: null,
+const initialState: BrandApiState<Brand> = {
+  brandList : [],
+  selectedBrand :null,
   loading: "None",
   error: null,
-}
+  
+} 
 
 // Async thunks
 export const fetchBrands = createAsyncThunk("brands/fetchAll", async (_, { dispatch, rejectWithValue }) => {
