@@ -1,4 +1,4 @@
-import { fetch } from "./api-service"
+import { fetch, myAxiosRequestConfig } from "./api-service"
 
 export interface Brand {
   brandCode: string
@@ -23,7 +23,10 @@ export interface UpdateBrandDto {
 
 const brandService = {
   getAllBrands: async (): Promise<Brand[]> => {
-    return fetch<Brand[]>("GET", "/Brand")
+    console.log("det");
+    
+    let a = {cache : true} as myAxiosRequestConfig;
+    return fetch<Brand[]>("GET", "/Brand",{},a)
   },
 
   getBrandById: async (id: number): Promise<Brand> => {

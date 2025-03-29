@@ -1,7 +1,8 @@
 import axios, { type AxiosError, type AxiosInstance, type AxiosResponse } from "axios"
+import { setupCache,buildWebStorage,CacheInstance } from 'axios-cache-interceptor';
 
 // Create axios instance with default config
-const axiosInstance: AxiosInstance = axios.create({
+const axiosInstance: AxiosInstance & CacheInstance= setupCache(axios.create({
   baseURL: "/api",
   timeout: 300000, // 30 seconds
   headers: {
@@ -9,7 +10,18 @@ const axiosInstance: AxiosInstance = axios.create({
     Accept: "application/json",
   },
   
-})
+}),
+ {
+  storage: buildWebStorage(sessionStorage, "my-cache:"), // Sử dụng SessionStorage
+  ttl: 1000 * 60 * 120, // Mặc định không cache
+  methods: ["get"], // Chỉ cache GET requests
+  interpretHeader: true, //  tự động đọc headers cache từ server
+  
+}
+);
+
+
+
 
 // Request interceptor to add user and client info to all requests
 axiosInstance.interceptors.request.use(
