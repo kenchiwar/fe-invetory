@@ -1,6 +1,6 @@
 "use client"
 
-import type React from "react"
+
 import { useState, useEffect } from "react"
 import {
   Table,
@@ -418,5 +418,4 @@ const BrandListPage: React.FC = () => {
   )
 }
 
-export default BrandListPage
-
+export default BrandListPage;
