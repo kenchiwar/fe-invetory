@@ -1,4 +1,4 @@
-import { fetch, myAxiosRequestConfig } from "./api-service"
+import { BaseService } from "./base-service"
 
 export interface Brand {
   brandCode: string
@@ -11,40 +11,50 @@ export interface Brand {
   updatedDate: string
 }
 
-export interface CreateBrandDto {
+export interface BrandDto {
   brandCode: string
   brandName: string
+  id?: number
 }
 
-export interface UpdateBrandDto {
-  brandCode?: string
-  brandName?: string
+class BrandService extends BaseService<Brand, BrandDto> {
+  constructor() {
+    super("/Brand")
+  }
+
+  // Get all brands
+  async getAllBrands(config?: { cache?: boolean }): Promise<Brand[]> {
+    return this.getAll(config)
+  }
+
+  // Get all brands with cache option
+  async getAllBrandsCached(): Promise<Brand[]> {
+    return this.getAll({ cache: true })
+  }
+
+  // Get brand by ID
+  async getBrandById(id: number): Promise<Brand> {
+    return this.getById(id)
+  }
+
+  // Save brand (create or update)
+  async saveBrand(data: BrandDto): Promise<Brand> {
+    return this.save(data)
+  }
+
+  // Delete brand
+  async deleteBrand(id: number): Promise<void> {
+    return this.delete(id)
+  }
+
+  // Clear brand cache (if needed)
+  clearBrandCache(): void {
+    // This would need to be implemented based on your caching strategy
+    console.log("Cache cleared for brands")
+  }
 }
 
-const brandService = {
-  getAllBrands: async (): Promise<Brand[]> => {
-    console.log("det");
-    
-    let a = {cache : true} as myAxiosRequestConfig;
-    return fetch<Brand[]>("GET", "/Brand",{},a)
-  },
-
-  getBrandById: async (id: number): Promise<Brand> => {
-    return fetch<Brand>("GET", `/Brand/${id}`)
-  },
-
-  createBrand: async (brand: CreateBrandDto): Promise<Brand> => {
-    return fetch<Brand, CreateBrandDto>("POST", "/Brand", brand)
-  },
-
-  updateBrand: async (id: number, brand: UpdateBrandDto): Promise<Brand> => {
-    return fetch<Brand, UpdateBrandDto>("PUT", `/Brand/${id}`, brand)
-  },
-
-  deleteBrand: async (id: number): Promise<void> => {
-    return fetch<void, null>("DELETE", `/Brand/${id}`, null)
-  },
-}
-
+// Create and export a singleton instance
+const brandService = new BrandService()
 export default brandService
 
