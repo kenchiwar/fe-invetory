@@ -73,14 +73,9 @@ function MainLayout() {
     {
       key: "brands",
       icon: <ShoppingOutlined />,
-      label: <Link to="/BrandList">Brands</Link>,
+      label: <Link to="/brand">Brands</Link>,
     },
  
-    {
-      key: "chat",
-      icon: <MessageOutlined />,
-      label: <Link to="/chat">Real-time Chat</Link>,
-    },
     {
       key: "current-stock",
       icon: <DatabaseOutlined />,
