@@ -13,6 +13,7 @@ import {
   MessageOutlined,
   SettingOutlined,
   UserOutlined,
+  DatabaseOutlined,
 } from "@ant-design/icons"
 
 
@@ -74,20 +75,17 @@ function MainLayout() {
       icon: <ShoppingOutlined />,
       label: <Link to="/BrandList">Brands</Link>,
     },
-    // {
-    //   key: "notifications",
-    //   icon: (
-    //     // <Badge count={getUnreadCount()} size="small" offset={[2, -2]}>
-    //     //   <BellOutlined />
-    //     // </Badge>
-    //   ),
-    //   label: <Link to="/notifications">Notifications</Link>,
-    // },
+ 
     {
       key: "chat",
       icon: <MessageOutlined />,
       label: <Link to="/chat">Real-time Chat</Link>,
     },
+    {
+      key: "current-stock",
+      icon: <DatabaseOutlined />,
+      label: <Link to="/current-stock">Current Stock</Link>,
+    }
   ]
 
   // Toggle drawer for mobile view
