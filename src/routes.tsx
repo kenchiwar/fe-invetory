@@ -28,7 +28,7 @@ const routes: RouteObject[] = [
         element: <RouterQuery />,
       },
        {
-        path: "BrandList",
+        path: "Brand",
         element: <BrandList />,
       },
     ],

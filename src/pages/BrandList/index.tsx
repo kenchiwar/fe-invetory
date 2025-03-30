@@ -28,9 +28,7 @@ import {
   SortAscendingOutlined,
   SortDescendingOutlined,
 } from "@ant-design/icons"
-import type { ColumnsType } from "antd/es/table"
-import type { TablePaginationConfig } from "antd/es/table"
-
+import type { TablePaginationConfig,ColumnsType } from "antd/es/table"
 import { useAppDispatch, useAppSelector } from "@/redux/store"
 import { fetchBrands, saveBrand, deleteBrand, setSelectedBrand } from "@/redux/reducers/brandReducer"
 import type { Brand, BrandDto } from "@/api/brand-service"
