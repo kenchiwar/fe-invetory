@@ -5,27 +5,29 @@ export interface CurrentStock {
   productID: number
   productVariantID: number | null
   uoMID: number
-  quantity: number
-  warehouseID: number
-  storageBinID: number | null
-  rowPointer: string
-  createdBy: string
-  createdDate: string
-  updatedBy: string
-  updatedDate: string
+  quantity: number;
+  warehouseID: number;
+  storageBinID: number | null;
+  rowPointer: string;
+  createdBy: string;
+  createdDate: string;
+  updatedBy: string;
+  updatedDate: string;
+  CreatedBy : string;
+  UpdatedBy: string;
 }
 
 export interface CurrentStockDto {
-  id?: number
-  productID: number
-  productVariantID: number | null
-  uoMID: number
-  quantity: number
+  id?: number;
+  productID: number;
+  productVariantID: number | null;
+  uoMID: number;
+  quantity: number;
   warehouseID: number
-  storageBinID: number | null
+  storageBinID: number | null;
 }
 
-class CurrentStockService extends BaseService<CurrentStock, CurrentStockDto> {
+class CurrentStockService extends BaseService<CurrentStock> {
   constructor() {
     super("/CurrentStock")
   }
@@ -46,7 +48,7 @@ class CurrentStockService extends BaseService<CurrentStock, CurrentStockDto> {
   }
 
   // Save current stock (create or update)
-  async saveCurrentStock(data: CurrentStockDto): Promise<CurrentStock> {
+  async saveCurrentStock(data: CurrentStock): Promise<CurrentStock> {
     return this.save(data)
   }
 

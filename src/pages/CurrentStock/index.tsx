@@ -1,3 +1,5 @@
+"use client"
+
 import type React from "react"
 import { useState, useEffect, useCallback } from "react"
 import { Table, Button, Space, message, Input, Modal, Form, InputNumber, Skeleton, Card, Row, Col } from "antd"
@@ -171,7 +173,7 @@ const CurrentStockPage: React.FC = () => {
       const values = await form.validateFields()
 
       // Use the save action
-      await dispatch(saveCurrentStock(values)).unwrap()
+      await dispatch(saveCurrentStock(values as CurrentStock)).unwrap()
 
       message.success(`Current stock ${isEditing ? "updated" : "created"} successfully`)
       setIsModalVisible(false)
@@ -213,29 +215,40 @@ const CurrentStockPage: React.FC = () => {
   }, [])
 
   // Filter current stocks based on search text (searching in product ID)
-  const filteredCurrentStocks = currentStocks.filter((stock) => {
-    return stock.productID.toString().includes(searchText)
-  })
-  
+  const filteredCurrentStocks =
+    currentStocks?.filter((stock) => {
+      return stock.productID.toString().includes(searchText)
+    }) || []
+
   // Sort current stocks based on current sort settings
   const sortedCurrentStocks = [...filteredCurrentStocks].sort((a, b) => {
     const aValue = a[sort.field as keyof CurrentStock]
     const bValue = b[sort.field as keyof CurrentStock]
 
+    // Handle string comparisons
     if (typeof aValue === "string" && typeof bValue === "string") {
       return sort.direction === SortDirection.ASC ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue)
     }
 
-    // Default comparison for non-string values
-    
-    if (aValue == null && bValue == null) return 0; 
-    if (aValue == null) {
-      return sort.direction === SortDirection.ASC ? 1 : -1; 
+    // Handle null values
+    if (aValue == null && bValue == null) return 0
+    if (aValue == null) return sort.direction === SortDirection.ASC ? 1 : -1
+    if (bValue == null) return sort.direction === SortDirection.ASC ? -1 : 1
+
+    // Handle numeric comparisons (this was missing)
+    if (typeof aValue === "number" && typeof bValue === "number") {
+      return sort.direction === SortDirection.ASC ? aValue - bValue : bValue - aValue
     }
-    if (bValue == null) {
-      return sort.direction === SortDirection.ASC ? -1 : 1;  
-    }
-    return 0;
+
+    // // Handle date comparisons
+    // if (aValue as any instanceof Date && bValue as any instanceof Date) {
+    //   return sort.direction === SortDirection.ASC
+    //     ? aValue.getTime() - bValue.getTime()
+    //     : bValue.getTime() - aValue.getTime()
+    // }
+
+    // Default case
+    return 0
   })
 
   // Table columns configuration
@@ -519,4 +532,6 @@ const CurrentStockPage: React.FC = () => {
 }
 
 export default CurrentStockPage
+
+
 

@@ -27,12 +27,12 @@ export class BaseService<T extends Entity, Dto = Omit<T, "id">> {
   // Save entity (create or update based on whether id is provided)
   async save(data: Dto & Partial<{ id: number }>, config?: myAxiosRequestConfig): Promise<T> {
     // Always use POST for both create and update
-    return fetch<T, Dto & Partial<{ id: number }>>("POST", this.endpoint, data, config)
+    return fetch<T, Dto & Partial<{ id: number }>>("POST",`${this.endpoint}/save`, data, config)
   }
 
   // Delete entity
   async delete(id: number, config?: myAxiosRequestConfig): Promise<void> {
-    return fetch<void, null>("DELETE", `${this.endpoint}/${id}`, null, config)
+    return fetch<void, null>("DELETE", `${this.endpoint}?id=${id}`, null, config)
   }
 }
 

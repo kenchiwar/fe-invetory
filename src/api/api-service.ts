@@ -3,7 +3,8 @@ import type { AxiosRequestConfig } from "axios"
 import {  CacheAxiosResponse,CacheProperties } from "axios-cache-interceptor";
 export interface ApiResponse<T> {
   message: string
-  code: string
+  code: string;
+  sent: Date,
   data: T
 }
 export type myAxiosRequestConfig = AxiosRequestConfig & {
@@ -31,13 +32,16 @@ export const fetch = async <T, D = any>(
         //end logic unactive memory cache
          
         response = await axiosInstance.get<ApiResponse<T>,CacheAxiosResponse<ApiResponse<T>>>(url, myConfig)
+        
       console.log("api-service-ts-cache"+response.cached);
         break
       case "POST":
         response = await axiosInstance.post<ApiResponse<T>,CacheAxiosResponse<ApiResponse<T>>>(url, data, config)
         break
       case "PUT":
-        response = await axiosInstance.put<ApiResponse<T>,CacheAxiosResponse<ApiResponse<T>>>(url, data, config)
+        response = await axiosInstance.put<ApiResponse<T>
+        ,CacheAxiosResponse<ApiResponse<T>>
+        >(url, data, config)
         break
       case "DELETE":
         response = await axiosInstance.delete<ApiResponse<T>,CacheAxiosResponse<ApiResponse<T>>>(url, {

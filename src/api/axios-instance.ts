@@ -36,11 +36,11 @@ axiosInstance.interceptors.request.use(
       const originalData = config.data
 
       // Create the new structure
-      config.data = {
-        user: "currentUser", // Replace with actual user info
-        client: "webClient", // Replace with actual client info
-        data: originalData, // The original data
-      }
+      // config.data = {
+      //   user: "currentUser", // Replace with actual user info
+      //   client: "webClient", // Replace with actual client info
+      //   data: originalData, // The original data
+      // }
     }
 
     return config

@@ -200,7 +200,7 @@ function MainLayout() {
         />
       </Drawer>
 
-      <Content className="tw:p-4 tw:mx-auto" style={{ maxWidth: 1600 }}>
+      <Content className="tw:p-4 tw:mx-auto" style={{ maxWidth: 800 }}>
         <div className="tw:bg-white tw:p-4 tw:min-h-[280px]">
           <Suspense fallback={<Loading />}>
             <Outlet />

@@ -23,7 +23,8 @@ export const fetchCurrentStocks = createAsyncThunk(
   async (_, { dispatch, rejectWithValue }) => {
     try {
       dispatch(setLoading({ status: "All", entityType: "currentStock" }))
-      const result = await currentStockService.getAllCurrentStocks()
+      const result = await currentStockService.getAllCurrentStocks();
+      console.log(result,"result");
       dispatch(clearLoading())
       return result
     } catch (error) {
@@ -39,6 +40,7 @@ export const fetchCurrentStockById = createAsyncThunk(
     try {
       dispatch(setLoading({ status: "Get", entityType: "currentStock" }))
       const result = await currentStockService.getCurrentStockById(id)
+      console.log(result,"result");
       dispatch(clearLoading())
       return result
     } catch (error) {
@@ -50,10 +52,17 @@ export const fetchCurrentStockById = createAsyncThunk(
 
 export const saveCurrentStock = createAsyncThunk(
   "currentStocks/save",
-  async (currentStock: CurrentStockDto, { dispatch, rejectWithValue }) => {
+  async (currentStock: CurrentStock, { dispatch, rejectWithValue }) => {
     try {
       dispatch(setLoading({ status: "Save", entityType: "currentStock" }))
+     
+      currentStock.CreatedBy = "2025-03-30T09:03:29.883Z";
+      currentStock.UpdatedBy =  "2025-03-30T09:03:29.883Z"
+
+      console.log("current",currentStock);
       const result = await currentStockService.saveCurrentStock(currentStock)
+      
+      console.log(result,"result");
       dispatch(clearLoading())
       return result
     } catch (error) {
@@ -93,7 +102,8 @@ const currentStockSlice = createSlice({
   extraReducers: (builder) => {
     // Fetch all current stocks
     builder.addCase(fetchCurrentStocks.fulfilled, (state, action: PayloadAction<CurrentStock[]>) => {
-      state.brandList = []; 
+      console.log(action,"action");
+      state.brandList = action.payload;
     })
     builder.addCase(fetchCurrentStocks.rejected, (state, action) => {
       state.error = action.payload as string
