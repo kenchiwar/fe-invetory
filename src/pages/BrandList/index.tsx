@@ -1,7 +1,7 @@
-"use client"
+"use client";
 
-import type React from "react"
-import { useState, useEffect, useCallback } from "react"
+import type React from "react";
+import { useState, useEffect, useCallback } from "react";
 import {
   Table,
   Button,
@@ -16,8 +16,8 @@ import {
   Skeleton,
   Card,
   Row,
-  Col,
-} from "antd"
+  Col
+} from "antd";
 import {
   SearchOutlined,
   ReloadOutlined,
@@ -26,14 +26,14 @@ import {
   DeleteOutlined,
   ClearOutlined,
   SortAscendingOutlined,
-  SortDescendingOutlined,
-} from "@ant-design/icons"
-import type { TablePaginationConfig,ColumnsType } from "antd/es/table"
-import { useAppDispatch, useAppSelector } from "@/redux/store"
-import { fetchBrands, saveBrand, deleteBrand, setSelectedBrand } from "@/redux/reducers/brandReducer"
-import type { Brand, BrandDto } from "@/api/brand-service"
-import brandService from "@/api/brand-service"
-import { SortDirection } from "@/api/query-builder"
+  SortDescendingOutlined
+} from "@ant-design/icons";
+import type { TablePaginationConfig, ColumnsType } from "antd/es/table";
+import { useAppDispatch, useAppSelector } from "@/redux/store";
+import { fetchBrands, saveBrand, deleteBrand, setSelectedBrand } from "@/redux/reducers/brandReducer";
+import type { Brand, BrandDto } from "@/api/brand-service";
+import brandService from "@/api/brand-service";
+import { SortDirection } from "@/api/query-builder";
 
 interface SortState {
   field: string
@@ -42,75 +42,75 @@ interface SortState {
 
 const BrandListPage: React.FC = () => {
   // Redux hooks
-  const dispatch = useAppDispatch()
-  const { brandList, selectedBrand, error } = useAppSelector((state) => state.brands)
-  const { status: loadingStatus, entityType } = useAppSelector((state) => state.loading)
+  const dispatch = useAppDispatch();
+  const { brandList, selectedBrand, error } = useAppSelector((state) => state.brands);
+  const { status: loadingStatus, entityType } = useAppSelector((state) => state.loading);
 
-  const isLoading = entityType === "brand" && loadingStatus !== "None"
+  const isLoading = entityType === "brand" && loadingStatus !== "None";
 
   // Local state
-  const [searchText, setSearchText] = useState<string>("")
-  const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
-  const [isEditing, setIsEditing] = useState<boolean>(false)
-  const [useCache, setUseCache] = useState<boolean>(true)
+  const [searchText, setSearchText] = useState<string>("");
+  const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
+  const [isEditing, setIsEditing] = useState<boolean>(false);
+  const [useCache, setUseCache] = useState<boolean>(true);
   const [sort, setSort] = useState<SortState>({
     field: "brandName",
-    direction: SortDirection.ASC,
-  })
+    direction: SortDirection.ASC
+  });
   const [pagination, setPagination] = useState<{
     current: number
     pageSize: number
   }>({
     current: 1,
-    pageSize: 5,
-  })
+    pageSize: 5
+  });
 
   // Form instance
   const [form] = Form.useForm<{
     brandCode: string
     brandName: string
-  }>()
+  }>();
 
   // Fetch data on component mount
   useEffect(() => {
-    fetchData()
-  }, [])
+    fetchData();
+  }, []);
 
   // Show error messages
   useEffect(() => {
     if (error) {
-      message.error(error)
+      message.error(error);
     }
-  }, [error])
+  }, [error]);
 
   // Fetch brands data
   const fetchData = useCallback(async (): Promise<void> => {
     try {
-      await dispatch(fetchBrands()).unwrap()
+      await dispatch(fetchBrands()).unwrap();
     } catch (error) {
-      console.error("Error fetching data:", error)
-      message.error("Failed to fetch brands")
+      console.error("Error fetching data:", error);
+      message.error("Failed to fetch brands");
     }
-  }, [dispatch])
+  }, [dispatch]);
 
   // Refresh data
   const handleRefresh = useCallback((): void => {
-    setUseCache(false)
-    fetchData()
-    message.success("Data refreshed from server")
-  }, [fetchData])
+    setUseCache(false);
+    fetchData();
+    message.success("Data refreshed from server");
+  }, [fetchData]);
 
   // Clear cache
   const handleClearCache = useCallback((): void => {
-    brandService.clearBrandCache()
-    message.success("Cache cleared")
-    fetchData()
-  }, [fetchData])
+    brandService.clearBrandCache();
+    message.success("Cache cleared");
+    fetchData();
+  }, [fetchData]);
 
   // Handle search input change
   const handleSearch = useCallback((value: string): void => {
-    setSearchText(value)
-  }, [])
+    setSearchText(value);
+  }, []);
 
   // Handle sorting
   const handleSort = useCallback((field: string): void => {
@@ -119,70 +119,70 @@ const BrandListPage: React.FC = () => {
         // Toggle direction if same field
         return {
           ...prevSort,
-          direction: prevSort.direction === SortDirection.ASC ? SortDirection.DESC : SortDirection.ASC,
-        }
+          direction: prevSort.direction === SortDirection.ASC ? SortDirection.DESC : SortDirection.ASC
+        };
       } else {
         // Set new field and default to ASC
         return {
           field,
-          direction: SortDirection.ASC,
-        }
+          direction: SortDirection.ASC
+        };
       }
-    })
-  }, [])
+    });
+  }, []);
 
   // Show add modal
   const showAddModal = useCallback((): void => {
-    form.resetFields()
-    setIsEditing(false)
-    dispatch(setSelectedBrand(null))
-    setIsModalVisible(true)
-  }, [dispatch, form])
+    form.resetFields();
+    setIsEditing(false);
+    dispatch(setSelectedBrand(null));
+    setIsModalVisible(true);
+  }, [dispatch, form]);
 
   // Show edit modal
   const showEditModal = useCallback(
     (brand: Brand): void => {
       form.setFieldsValue({
         brandCode: brand.brandCode,
-        brandName: brand.brandName,
-      })
-      setIsEditing(true)
-      dispatch(setSelectedBrand(brand))
-      setIsModalVisible(true)
+        brandName: brand.brandName
+      });
+      setIsEditing(true);
+      dispatch(setSelectedBrand(brand));
+      setIsModalVisible(true);
     },
-    [dispatch, form],
-  )
+    [dispatch, form]
+  );
 
   // Handle modal cancel
   const handleCancel = useCallback((): void => {
-    setIsModalVisible(false)
-    dispatch(setSelectedBrand(null))
-  }, [dispatch])
+    setIsModalVisible(false);
+    dispatch(setSelectedBrand(null));
+  }, [dispatch]);
 
   // Handle form submission
   const handleSubmit = useCallback(async (): Promise<void> => {
     try {
-      const values = await form.validateFields()
+      const values = await form.validateFields();
 
       // Prepare the data for saving
       const brandData: BrandDto = {
         ...values,
-        ...(isEditing && selectedBrand ? { id: selectedBrand.id } : {}),
-      }
+        ...(isEditing && selectedBrand ? { id: selectedBrand.id } : {})
+      };
 
       // Use the save action
-      await dispatch(saveBrand(brandData)).unwrap()
+      await dispatch(saveBrand(brandData)).unwrap();
 
-      message.success(`Brand ${isEditing ? "updated" : "created"} successfully`)
-      setIsModalVisible(false)
+      message.success(`Brand ${isEditing ? "updated" : "created"} successfully`);
+      setIsModalVisible(false);
 
       // Refresh the data
-      fetchData()
+      fetchData();
     } catch (error) {
-      console.error("Failed to save brand:", error)
-      message.error("Failed to save brand")
+      console.error("Failed to save brand:", error);
+      message.error("Failed to save brand");
     }
-  }, [dispatch, form, isEditing, selectedBrand, fetchData])
+  }, [dispatch, form, isEditing, selectedBrand, fetchData]);
 
   // Handle brand deletion
   const handleDelete = useCallback(
@@ -195,48 +195,48 @@ const BrandListPage: React.FC = () => {
         cancelText: "No",
         onOk: async () => {
           try {
-            await dispatch(deleteBrand(id)).unwrap()
-            message.success("Brand deleted successfully")
+            await dispatch(deleteBrand(id)).unwrap();
+            message.success("Brand deleted successfully");
 
             // Refresh the data
-            fetchData()
+            fetchData();
           } catch (error) {
-            console.error("Failed to delete brand:", error)
-            message.error("Failed to delete brand")
+            console.error("Failed to delete brand:", error);
+            message.error("Failed to delete brand");
           }
-        },
-      })
+        }
+      });
     },
-    [dispatch, fetchData],
-  )
+    [dispatch, fetchData]
+  );
 
   // Handle table pagination change
   const handleTableChange = useCallback((tablePagination: TablePaginationConfig): void => {
     setPagination({
       current: tablePagination.current || 1,
-      pageSize: tablePagination.pageSize || 5,
-    })
-  }, [])
+      pageSize: tablePagination.pageSize || 5
+    });
+  }, []);
 
   // Filter brands based on search text
   const filteredBrands = brandList.filter(
     (brand) =>
       brand.brandName.toLowerCase().includes(searchText.toLowerCase()) ||
-      brand.brandCode.toLowerCase().includes(searchText.toLowerCase()),
-  )
+      brand.brandCode.toLowerCase().includes(searchText.toLowerCase())
+  );
 
   // Sort brands based on current sort settings
   const sortedBrands = [...filteredBrands].sort((a, b) => {
-    const aValue = a[sort.field as keyof Brand]
-    const bValue = b[sort.field as keyof Brand]
+    const aValue = a[sort.field as keyof Brand];
+    const bValue = b[sort.field as keyof Brand];
 
     if (typeof aValue === "string" && typeof bValue === "string") {
-      return sort.direction === SortDirection.ASC ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue)
+      return sort.direction === SortDirection.ASC ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue);
     }
 
     // Default comparison for non-string values
-    return sort.direction === SortDirection.ASC ? (aValue > bValue ? 1 : -1) : bValue > aValue ? 1 : -1
-  })
+    return sort.direction === SortDirection.ASC ? (aValue > bValue ? 1 : -1) : bValue > aValue ? 1 : -1;
+  });
 
   // Table columns configuration
   const columns: ColumnsType<Brand> = [
@@ -263,7 +263,7 @@ const BrandListPage: React.FC = () => {
         </div>
       ),
       dataIndex: "brandCode",
-      key: "brandCode",
+      key: "brandCode"
     },
     {
       title: (
@@ -288,12 +288,12 @@ const BrandListPage: React.FC = () => {
         </div>
       ),
       dataIndex: "brandName",
-      key: "brandName",
+      key: "brandName"
     },
     {
       title: "Created By",
       dataIndex: "createdBy",
-      key: "createdBy",
+      key: "createdBy"
     },
     {
       title: (
@@ -319,18 +319,18 @@ const BrandListPage: React.FC = () => {
       ),
       dataIndex: "createdDate",
       key: "createdDate",
-      render: (text: string) => new Date(text).toLocaleString(),
+      render: (text: string) => new Date(text).toLocaleString()
     },
     {
       title: "Updated By",
       dataIndex: "updatedBy",
-      key: "updatedBy",
+      key: "updatedBy"
     },
     {
       title: "Updated Date",
       dataIndex: "updatedDate",
       key: "updatedDate",
-      render: (text: string) => new Date(text).toLocaleString(),
+      render: (text: string) => new Date(text).toLocaleString()
     },
     {
       title: "Actions",
@@ -354,9 +354,9 @@ const BrandListPage: React.FC = () => {
             Delete
           </Button>
         </Space>
-      ),
-    },
-  ]
+      )
+    }
+  ];
 
   // Render skeleton when loading all data
   const renderSkeleton = (): JSX.Element => (
@@ -372,7 +372,7 @@ const BrandListPage: React.FC = () => {
         ))}
       </Row>
     </>
-  )
+  );
 
   return (
     <div className="tw:p-6">
@@ -424,7 +424,7 @@ const BrandListPage: React.FC = () => {
               current: pagination.current,
               pageSize: pagination.pageSize,
               showSizeChanger: true,
-              showTotal: (total) => `Total ${total} brands`,
+              showTotal: (total) => `Total ${total} brands`
             }}
             className="tw:w-full"
             loading={loadingStatus === "Get"}
@@ -460,7 +460,7 @@ const BrandListPage: React.FC = () => {
         </Form>
       </Modal>
     </div>
-  )
-}
+  );
+};
 
-export default BrandListPage
+export default BrandListPage;

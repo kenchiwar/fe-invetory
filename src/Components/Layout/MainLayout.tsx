@@ -1,9 +1,9 @@
-"use client"
+"use client";
 
-import { useState, useEffect, Suspense } from "react"
-import { Outlet, Link, useLocation } from "react-router-dom"
-import { Helmet } from "react-helmet-async"
-import { Layout, Menu, Button, Drawer, Space, Typography, Divider, Badge, Dropdown } from "antd"
+import { useState, useEffect, Suspense } from "react";
+import { Outlet, Link, useLocation } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
+import { Layout, Menu, Button, Drawer, Space, Typography, Divider, Badge, Dropdown } from "antd";
 import {
   HomeOutlined,
   ReadOutlined,
@@ -13,80 +13,80 @@ import {
   MessageOutlined,
   SettingOutlined,
   UserOutlined,
-  DatabaseOutlined,
-} from "@ant-design/icons"
+  DatabaseOutlined
+} from "@ant-design/icons";
 
 
 
-import Loading from "@components/Loading"
+import Loading from "@components/Loading";
 
 
-const { Header, Content, Footer } = Layout
-const { Text } = Typography
+const { Header, Content, Footer } = Layout;
+const { Text } = Typography;
 
-function MainLayout() {
-  const [mobileView, setMobileView] = useState(false)
-  const [drawerOpen, setDrawerOpen] = useState(false)
-  const location = useLocation()
+function MainLayout () {
+  const [mobileView, setMobileView] = useState(false);
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const location = useLocation();
 
   // SignalR hook for notifications
   // const { notifications, getUnreadCount } = useSignalR()
 
   // Determine which menu item should be active based on current path
   const getSelectedKey = () => {
-    const path = location.pathname
+    const path = location.pathname;
 
-    if (path === "/") return ["home"]
-    if (path === "/read") return ["read"]
-    if (path === "/brands") return ["brands"]
-    if (path === "/notifications") return ["notifications"]
-    if (path === "/chat") return ["chat"]
-    return []
-  }
+    if (path === "/") return ["home"];
+    if (path === "/read") return ["read"];
+    if (path === "/brands") return ["brands"];
+    if (path === "/notifications") return ["notifications"];
+    if (path === "/chat") return ["chat"];
+    return [];
+  };
 
   // Check if we're in mobile view
   useEffect(() => {
     const checkMobile = () => {
-      setMobileView(window.innerWidth < 768)
-    }
+      setMobileView(window.innerWidth < 768);
+    };
 
-    checkMobile()
-    window.addEventListener("resize", checkMobile)
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
 
     return () => {
-      window.removeEventListener("resize", checkMobile)
-    }
-  }, [])
+      window.removeEventListener("resize", checkMobile);
+    };
+  }, []);
 
   // Menu items configuration
   const menuItems = [
     {
       key: "home",
       icon: <HomeOutlined />,
-      label: <Link to="/">Home</Link>,
+      label: <Link to="/">Home</Link>
     },
     {
       key: "read",
       icon: <ReadOutlined />,
-      label: <Link to="/read">Read</Link>,
+      label: <Link to="/read">Read</Link>
     },
     {
       key: "brands",
       icon: <ShoppingOutlined />,
-      label: <Link to="/brand">Brands</Link>,
+      label: <Link to="/brand">Brands</Link>
     },
  
     {
       key: "current-stock",
       icon: <DatabaseOutlined />,
-      label: <Link to="/current-stock">Current Stock</Link>,
+      label: <Link to="/current-stock">Current Stock</Link>
     }
-  ]
+  ];
 
   // Toggle drawer for mobile view
   const toggleDrawer = () => {
-    setDrawerOpen(!drawerOpen)
-  }
+    setDrawerOpen(!drawerOpen);
+  };
 
   return (
     <Layout className="tw:min-h-screen">
@@ -136,22 +136,22 @@ function MainLayout() {
                     {
                       key: "profile",
                       label: <Link to="/profile">Profile</Link>,
-                      icon: <UserOutlined />,
+                      icon: <UserOutlined />
                     },
                     {
                       key: "settings",
                       label: <Link to="/settings">Settings</Link>,
-                      icon: <SettingOutlined />,
+                      icon: <SettingOutlined />
                     },
                     {
-                      type: "divider",
+                      type: "divider"
                     },
                     {
                       key: "logout",
                       label: "Logout",
-                      danger: true,
-                    },
-                  ],
+                      danger: true
+                    }
+                  ]
                 }}
                 placement="bottomRight"
               >
@@ -175,22 +175,22 @@ function MainLayout() {
             {
               key: "profile",
               label: <Link to="/profile">Profile</Link>,
-              icon: <UserOutlined />,
+              icon: <UserOutlined />
             },
             {
               key: "settings",
               label: <Link to="/settings">Settings</Link>,
-              icon: <SettingOutlined />,
+              icon: <SettingOutlined />
             },
             {
-              type: "divider",
+              type: "divider"
             },
             {
               key: "logout",
               label: "Logout",
               danger: true,
-              icon: <UserOutlined />,
-            },
+              icon: <UserOutlined />
+            }
           ]}
         />
       </Drawer>
@@ -213,7 +213,7 @@ function MainLayout() {
 
     
     </Layout>
-  )
+  );
 }
 
-export default MainLayout
+export default MainLayout;

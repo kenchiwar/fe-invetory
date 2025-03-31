@@ -1,4 +1,4 @@
-import { fetch, type myAxiosRequestConfig } from "./api-service"
+import { fetch, type myAxiosRequestConfig } from "./api-service";
 
 // Generic interface for entity with ID
 export interface Entity {
@@ -8,31 +8,31 @@ export interface Entity {
 
 // Base service class that can be extended by specific entity services
 export class BaseService<T extends Entity, Dto = Omit<T, "id">> {
-  protected endpoint: string
+  protected endpoint: string;
 
-  constructor(endpoint: string) {
-    this.endpoint = endpoint
+  constructor (endpoint: string) {
+    this.endpoint = endpoint;
   }
 
   // Get all entities
-  async getAll(config?: myAxiosRequestConfig): Promise<T[]> {
-    return fetch<T[]>("GET", this.endpoint, undefined, config)
+  async getAll (config?: myAxiosRequestConfig): Promise<T[]> {
+    return fetch<T[]>("GET", this.endpoint, undefined, config);
   }
 
   // Get entity by ID
-  async getById(id: number, config?: myAxiosRequestConfig): Promise<T> {
-    return fetch<T>("GET", `${this.endpoint}/${id}`, undefined, config)
+  async getById (id: number, config?: myAxiosRequestConfig): Promise<T> {
+    return fetch<T>("GET", `${this.endpoint}/${id}`, undefined, config);
   }
 
   // Save entity (create or update based on whether id is provided)
-  async save(data: Dto & Partial<{ id: number }>, config?: myAxiosRequestConfig): Promise<T> {
+  async save (data: Dto & Partial<{ id: number }>, config?: myAxiosRequestConfig): Promise<T> {
     // Always use POST for both create and update
-    return fetch<T, Dto & Partial<{ id: number }>>("POST",`${this.endpoint}/save`, data, config)
+    return fetch<T, Dto & Partial<{ id: number }>>("POST", `${this.endpoint}/save`, data, config);
   }
 
   // Delete entity
-  async delete(id: number, config?: myAxiosRequestConfig): Promise<void> {
-    return fetch<void, null>("DELETE", `${this.endpoint}?id=${id}`, null, config)
+  async delete (id: number, config?: myAxiosRequestConfig): Promise<void> {
+    return fetch<void, null>("DELETE", `${this.endpoint}?id=${id}`, null, config);
   }
 }
 

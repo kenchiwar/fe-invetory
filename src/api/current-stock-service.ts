@@ -1,4 +1,4 @@
-import { BaseService } from "./base-service"
+import { BaseService } from "./base-service";
 
 export interface CurrentStock {
   id: number
@@ -28,42 +28,43 @@ export interface CurrentStockDto {
 }
 
 class CurrentStockService extends BaseService<CurrentStock> {
-  constructor() {
-    super("/CurrentStock")
+  constructor () {
+    super("/CurrentStock");
   }
 
   // Get all current stock items
-  async getAllCurrentStocks(config?: { cache?: boolean }): Promise<CurrentStock[]> {
-    return this.getAll(config)
+  async getAllCurrentStocks (config?: { cache?: boolean }): Promise<CurrentStock[]> {
+    return this.getAll(config);
   }
 
   // Get all current stock items with cache option
-  async getAllCurrentStocksCached(): Promise<CurrentStock[]> {
-    return this.getAll({ cache: true })
+  async getAllCurrentStocksCached (): Promise<CurrentStock[]> {
+    return this.getAll({ cache: true });
   }
 
   // Get current stock by ID
-  async getCurrentStockById(id: number): Promise<CurrentStock> {
-    return this.getById(id)
+  async getCurrentStockById (id: number): Promise<CurrentStock> {
+    return this.getById(id);
   }
 
   // Save current stock (create or update)
-  async saveCurrentStock(data: CurrentStock): Promise<CurrentStock> {
-    return this.save(data)
+  async saveCurrentStock (data: CurrentStock): Promise<CurrentStock> {
+    return this.save(data);
   }
 
   // Delete current stock
-  async deleteCurrentStock(id: number): Promise<void> {
-    return this.delete(id)
+  async deleteCurrentStock (id: number): Promise<void> {
+    return this.delete(id);
   }
 
   // Clear current stock cache
-  clearCurrentStockCache(): void {
-    console.log("Cache cleared for current stock")
+  clearCurrentStockCache (): void {
+    console.log("Cache cleared for current stock");
   }
 }
 
 // Create and export a singleton instance
-const currentStockService = new CurrentStockService()
-export default currentStockService
+const currentStockService = new CurrentStockService();
+
+export default currentStockService;
 

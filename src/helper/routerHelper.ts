@@ -4,13 +4,13 @@ import type { NavigateOptions } from "react-router-dom";
 import {  useSearchParams } from "react-router-dom";
 import * as JSURL from "jsurl";
 
-export function useQueryParam<T>(
+export function useQueryParam<T> (
   key: string
 ): [T | undefined, (newQuery: T, options?: NavigateOptions) => void] {
-  let [searchParams, setSearchParams] = useSearchParams();
-  let paramValue = searchParams.get(key);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const paramValue = searchParams.get(key);
 
-  let value = React.useMemo(() => {
+  const value = React.useMemo(() => {
     if (paramValue) {
       try {
         return JSURL.parse(paramValue) as T | undefined;
@@ -22,9 +22,10 @@ export function useQueryParam<T>(
     return undefined;
   }, [paramValue]);
 
-  let setValue = React.useCallback(
+  const setValue = React.useCallback(
     (newValue: T, options?: NavigateOptions) => {
-      let newSearchParams = new URLSearchParams(searchParams);
+      const newSearchParams = new URLSearchParams(searchParams);
+
       newSearchParams.set(key, JSURL.stringify(newValue));
       setSearchParams(newSearchParams, options);
     },
@@ -34,4 +35,4 @@ export function useQueryParam<T>(
   return [value, setValue];
 }
 
-export default {useQueryParam };
+export default { useQueryParam };

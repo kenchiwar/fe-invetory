@@ -3,13 +3,13 @@ import { lazy } from "react";
 import { ROUTES } from "@/constants/endpoint";
 import MainLayout from "@components/Layout/MainLayout";
 import NotFoundPage from "@pages/NotFound";
-//this use code  Code Splitting để load dử liệu page ít lại tra gg đi
+// this use code  Code Splitting để load dử liệu page ít lại tra gg đi
 const HomePage = lazy(() => import("@pages/Home"));
 const ReadPage = lazy(() => import("@pages/Read"));
 const RouterQuery = lazy(() => import("@pages/RouterQuery"));
 const BrandList = lazy(()=> import("@pages/BrandList"));
-const CurrentStockPage = lazy(() => import("@pages/CurrentStock"))
-//end this use code
+const CurrentStockPage = lazy(() => import("@pages/CurrentStock"));
+// end this use code
 
 const routes: RouteObject[] = [
   {
@@ -18,30 +18,30 @@ const routes: RouteObject[] = [
     children: [
       {
         index: true,
-        element: <HomePage />,
+        element: <HomePage />
       },
       {
         path: "read",
-        element: <ReadPage />,
+        element: <ReadPage />
       },
       {
         path: "route",
-        element: <RouterQuery />,
+        element: <RouterQuery />
       },
-       {
+      {
         path: "Brand",
-        element: <BrandList />,
+        element: <BrandList />
       },
       {
         path: "current-stock",
-        element: <CurrentStockPage />,
-      },
-    ],
+        element: <CurrentStockPage />
+      }
+    ]
   },
   {
     path: "*",
-    element: <NotFoundPage />,
-  },
+    element: <NotFoundPage />
+  }
 ];
 
 export default routes;

@@ -1,6 +1,6 @@
 import React from "react";
 import { Checkbox, Radio } from "antd";
-import  {useQueryParam}  from "@/helper/routerHelper"
+import  { useQueryParam }  from "@/helper/routerHelper";
 
 
 interface Pizza {
@@ -9,21 +9,21 @@ interface Pizza {
   extraSauce: boolean;
 }
 
-function PizzaForm() {
+function PizzaForm () {
   let [pizza, setPizza] = useQueryParam<Pizza>("pizza");
 
   if (!pizza) {
     pizza = { toppings: [], crust: "regular", extraSauce: false };
   }
 
-  function handleChange(event: React.ChangeEvent<HTMLFormElement>) {
-    let form = event.currentTarget;
-    let formData = new FormData(form);
+  function handleChange (event: React.ChangeEvent<HTMLFormElement>) {
+    const form = event.currentTarget;
+    const formData = new FormData(form);
 
-    let pizza: Pizza = {
+    const pizza: Pizza = {
       toppings: formData.getAll("toppings") as string[],
       crust: formData.get("crust") as string,
-      extraSauce: formData.get("extraSauce") === "on",
+      extraSauce: formData.get("extraSauce") === "on"
     };
 
     setPizza(pizza, { replace: true });

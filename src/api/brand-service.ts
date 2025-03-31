@@ -1,4 +1,4 @@
-import { BaseService } from "./base-service"
+import { BaseService } from "./base-service";
 
 export interface Brand {
   brandCode: string
@@ -18,43 +18,44 @@ export interface BrandDto {
 }
 
 class BrandService extends BaseService<Brand, BrandDto> {
-  constructor() {
-    super("/Brand")
+  constructor () {
+    super("/Brand");
   }
 
   // Get all brands
-  async getAllBrands(config?: { cache?: boolean }): Promise<Brand[]> {
-    return this.getAll(config)
+  async getAllBrands (config?: { cache?: boolean }): Promise<Brand[]> {
+    return this.getAll(config);
   }
 
   // Get all brands with cache option
-  async getAllBrandsCached(): Promise<Brand[]> {
-    return this.getAll({ cache: true })
+  async getAllBrandsCached (): Promise<Brand[]> {
+    return this.getAll({ cache: true });
   }
 
   // Get brand by ID
-  async getBrandById(id: number): Promise<Brand> {
-    return this.getById(id)
+  async getBrandById (id: number): Promise<Brand> {
+    return this.getById(id);
   }
 
   // Save brand (create or update)
-  async saveBrand(data: BrandDto): Promise<Brand> {
-    return this.save(data)
+  async saveBrand (data: BrandDto): Promise<Brand> {
+    return this.save(data);
   }
 
   // Delete brand
-  async deleteBrand(id: number): Promise<void> {
-    return this.delete(id)
+  async deleteBrand (id: number): Promise<void> {
+    return this.delete(id);
   }
 
   // Clear brand cache (if needed)
-  clearBrandCache(): void {
+  clearBrandCache (): void {
     // This would need to be implemented based on your caching strategy
-    console.log("Cache cleared for brands")
+    console.log("Cache cleared for brands");
   }
 }
 
 // Create and export a singleton instance
-const brandService = new BrandService()
-export default brandService
+const brandService = new BrandService();
+
+export default brandService;
 

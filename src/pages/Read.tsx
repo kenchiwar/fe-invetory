@@ -11,9 +11,9 @@ export default function HomePage () {
         <title>Trang Chủ - Read Page </title>
         <meta name="description" content="trang chủ Read page" />
       </Helmet>
-      <div style={{width : '300px'}}>
-      <Space direction="vertical" align="center">
-      <Typography.Title level={3}>Counter Value: {value}</Typography.Title>
+      <div style={{ width : "300px" }}>
+        <Space direction="vertical" align="center">
+          <Typography.Title level={3}>Counter Value: {value}</Typography.Title>
          
           <CounterButtons />
         </Space>

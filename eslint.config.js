@@ -3,11 +3,11 @@ import globals from "globals";
 import reactHooks from "eslint-plugin-react-hooks";
 import reactRefresh from "eslint-plugin-react-refresh";
 import tseslint from "typescript-eslint";
-import eslintPluginPrettier from "eslint-plugin-prettier/recommended";
+// import eslintPluginPrettier from "eslint-plugin-prettier/recommended";
 export default tseslint.config(
   { ignores: ["dist"] }, // Bỏ qua thư mục "dist" khi chạy ESLint
   {
-    extends: [js.configs.recommended,eslintPluginPrettier, ...tseslint.configs.recommended], // Kế thừa các cấu hình đề xuất của ESLint và TypeScript
+    extends: [js.configs.recommended, ...tseslint.configs.recommended], // Kế thừa các cấu hình đề xuất của ESLint và TypeScript
     files: ["**/*.{ts,tsx,jsx}"], // Chỉ kiểm tra các file TypeScript (*.ts, *.tsx)
     languageOptions: {
       ecmaVersion: 2020, // Sử dụng phiên bản ECMAScript 2020
