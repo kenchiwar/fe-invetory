@@ -1,7 +1,6 @@
 import React from "react";
 import { Checkbox, Radio } from "antd";
-import  { useQueryParam }  from "@/helper/routerHelper";
-
+import { useQueryParam } from "@/helper/routerHelper";
 
 interface Pizza {
   toppings: string[];
@@ -10,10 +9,11 @@ interface Pizza {
 }
 
 function PizzaForm () {
-  let [pizza, setPizza] = useQueryParam<Pizza>("pizza");
+  const [pizza, setPizza] = useQueryParam<Pizza>("pizza");
 
   if (!pizza) {
-    pizza = { toppings: [], crust: "regular", extraSauce: false };
+    setPizza({ toppings: [], crust: "regular", extraSauce: false });
+     
   }
 
   function handleChange (event: React.ChangeEvent<HTMLFormElement>) {
@@ -38,21 +38,21 @@ function PizzaForm () {
 
         <div className="tw:space-y-2">
           <Checkbox
-            defaultChecked={pizza.toppings.includes("pepperoni")}
+            defaultChecked={pizza?.toppings.includes("pepperoni")}
             name="toppings"
             value="pepperoni"
           >
             Pepperoni
           </Checkbox>
           <Checkbox
-            defaultChecked={pizza.toppings.includes("bell-peppers")}
+            defaultChecked={pizza?.toppings.includes("bell-peppers")}
             name="toppings"
             value="bell-peppers"
           >
             Bell Peppers
           </Checkbox>
           <Checkbox
-            defaultChecked={pizza.toppings.includes("olives")}
+            defaultChecked={pizza?.toppings.includes("olives")}
             name="toppings"
             value="olives"
           >
@@ -61,7 +61,7 @@ function PizzaForm () {
         </div>
 
         <div className="tw:space-y-2">
-          <Radio.Group defaultValue={pizza.crust} name="crust">
+          <Radio.Group defaultValue={pizza?.crust} name="crust">
             <Radio value="regular">Regular Crust</Radio>
             <Radio value="thin">Thin Crust</Radio>
             <Radio value="deep-dish">Deep Dish</Radio>
@@ -69,7 +69,7 @@ function PizzaForm () {
         </div>
 
         <div className="tw:space-y-2">
-          <Checkbox defaultChecked={pizza.extraSauce} name="extraSauce">
+          <Checkbox defaultChecked={pizza?.extraSauce} name="extraSauce">
             Extra Sauce
           </Checkbox>
         </div>

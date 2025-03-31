@@ -1,6 +1,4 @@
-import {
-  BrowserRouter, useRoutes
-} from "react-router-dom";
+import { BrowserRouter, useRoutes } from "react-router-dom";
 import routes from "./routes";
 import { HelmetProvider } from "react-helmet-async";
 import { Provider } from "react-redux";

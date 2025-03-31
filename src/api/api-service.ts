@@ -20,53 +20,52 @@ export const fetch = async <T, D = any>(
   try {
     let response;
 
-    switch(method) {
-      case "GET":
-        // add logic isactice memory cache
-        const myConfig = { cache: false, ...config } as myAxiosRequestConfig;
+    const myConfig = { cache: false, ...config } as myAxiosRequestConfig;
 
-        if (myConfig.cache) {
-          console.log("duoi vãi");
-          delete myConfig.cache;
-        }
-        // end logic unactive memory cache
+    switch (method) {
+    case "GET":
+      // add logic isactice memory cache
 
-        response = await axiosInstance.get<
+      if (myConfig.cache) {
+        delete myConfig.cache;
+      }
+      // end logic unactive memory cache
+
+      response = await axiosInstance.get<
           ApiResponse<T>,
           CacheAxiosResponse<ApiResponse<T>>
         >(url, myConfig);
 
-        console.log("api-service-ts-cache" + response.cached);
-        break;
-      case "POST":
-        response = await axiosInstance.post<
+      break;
+    case "POST":
+      response = await axiosInstance.post<
           ApiResponse<T>,
           CacheAxiosResponse<ApiResponse<T>>
         >(url, data, config);
-        break;
-      case "PUT":
-        response = await axiosInstance.put<
+      break;
+    case "PUT":
+      response = await axiosInstance.put<
           ApiResponse<T>,
           CacheAxiosResponse<ApiResponse<T>>
         >(url, data, config);
-        break;
-      case "DELETE":
-        response = await axiosInstance.delete<
+      break;
+    case "DELETE":
+      response = await axiosInstance.delete<
           ApiResponse<T>,
           CacheAxiosResponse<ApiResponse<T>>
         >(url, {
           ...config,
           data // For DELETE requests, data needs to be passed as config.data
         });
-        break;
-      case "PATCH":
-        response = await axiosInstance.patch<
+      break;
+    case "PATCH":
+      response = await axiosInstance.patch<
           ApiResponse<T>,
           CacheAxiosResponse<ApiResponse<T>>
         >(url, data, config);
-        break;
-      default:
-        throw new Error(`Unsupported method: ${method}`);
+      break;
+    default:
+      throw new Error(`Unsupported method: ${method}`);
     }
 
     return response.data.data;

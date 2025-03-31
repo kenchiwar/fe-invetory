@@ -30,21 +30,30 @@ import {
 } from "@ant-design/icons";
 import type { TablePaginationConfig, ColumnsType } from "antd/es/table";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
-import { fetchBrands, saveBrand, deleteBrand, setSelectedBrand } from "@/redux/reducers/brandReducer";
+import {
+  fetchBrands,
+  saveBrand,
+  deleteBrand,
+  setSelectedBrand
+} from "@/redux/reducers/brandReducer";
 import type { Brand, BrandDto } from "@/api/brand-service";
 import brandService from "@/api/brand-service";
 import { SortDirection } from "@/api/query-builder";
 
 interface SortState {
-  field: string
-  direction: SortDirection
+  field: string;
+  direction: SortDirection;
 }
 
 const BrandListPage: React.FC = () => {
   // Redux hooks
   const dispatch = useAppDispatch();
-  const { brandList, selectedBrand, error } = useAppSelector((state) => state.brands);
-  const { status: loadingStatus, entityType } = useAppSelector((state) => state.loading);
+  const { brandList, selectedBrand, error } = useAppSelector(
+    (state) => state.brands
+  );
+  const { status: loadingStatus, entityType } = useAppSelector(
+    (state) => state.loading
+  );
 
   const isLoading = entityType === "brand" && loadingStatus !== "None";
 
@@ -58,8 +67,8 @@ const BrandListPage: React.FC = () => {
     direction: SortDirection.ASC
   });
   const [pagination, setPagination] = useState<{
-    current: number
-    pageSize: number
+    current: number;
+    pageSize: number;
   }>({
     current: 1,
     pageSize: 5
@@ -67,8 +76,8 @@ const BrandListPage: React.FC = () => {
 
   // Form instance
   const [form] = Form.useForm<{
-    brandCode: string
-    brandName: string
+    brandCode: string;
+    brandName: string;
   }>();
 
   // Fetch data on component mount
@@ -119,7 +128,10 @@ const BrandListPage: React.FC = () => {
         // Toggle direction if same field
         return {
           ...prevSort,
-          direction: prevSort.direction === SortDirection.ASC ? SortDirection.DESC : SortDirection.ASC
+          direction:
+            prevSort.direction === SortDirection.ASC
+              ? SortDirection.DESC
+              : SortDirection.ASC
         };
       } else {
         // Set new field and default to ASC
@@ -173,7 +185,9 @@ const BrandListPage: React.FC = () => {
       // Use the save action
       await dispatch(saveBrand(brandData)).unwrap();
 
-      message.success(`Brand ${isEditing ? "updated" : "created"} successfully`);
+      message.success(
+        `Brand ${isEditing ? "updated" : "created"} successfully`
+      );
       setIsModalVisible(false);
 
       // Refresh the data
@@ -211,12 +225,15 @@ const BrandListPage: React.FC = () => {
   );
 
   // Handle table pagination change
-  const handleTableChange = useCallback((tablePagination: TablePaginationConfig): void => {
-    setPagination({
-      current: tablePagination.current || 1,
-      pageSize: tablePagination.pageSize || 5
-    });
-  }, []);
+  const handleTableChange = useCallback(
+    (tablePagination: TablePaginationConfig): void => {
+      setPagination({
+        current: tablePagination.current || 1,
+        pageSize: tablePagination.pageSize || 5
+      });
+    },
+    []
+  );
 
   // Filter brands based on search text
   const filteredBrands = brandList.filter(
@@ -231,11 +248,19 @@ const BrandListPage: React.FC = () => {
     const bValue = b[sort.field as keyof Brand];
 
     if (typeof aValue === "string" && typeof bValue === "string") {
-      return sort.direction === SortDirection.ASC ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue);
+      return sort.direction === SortDirection.ASC
+        ? aValue.localeCompare(bValue)
+        : bValue.localeCompare(aValue);
     }
 
     // Default comparison for non-string values
-    return sort.direction === SortDirection.ASC ? (aValue > bValue ? 1 : -1) : bValue > aValue ? 1 : -1;
+    return sort.direction === SortDirection.ASC
+      ? aValue > bValue
+        ? 1
+        : -1
+      : bValue > aValue
+        ? 1
+        : -1;
   });
 
   // Table columns configuration
@@ -341,7 +366,9 @@ const BrandListPage: React.FC = () => {
             type="primary"
             icon={<EditOutlined />}
             onClick={() => showEditModal(record)}
-            loading={loadingStatus === "Save" && selectedBrand?.id === record.id}
+            loading={
+              loadingStatus === "Save" && selectedBrand?.id === record.id
+            }
           >
             Edit
           </Button>
@@ -349,7 +376,9 @@ const BrandListPage: React.FC = () => {
             danger
             icon={<DeleteOutlined />}
             onClick={() => handleDelete(record.id)}
-            loading={loadingStatus === "Delete" && selectedBrand?.id === record.id}
+            loading={
+              loadingStatus === "Delete" && selectedBrand?.id === record.id
+            }
           >
             Delete
           </Button>
@@ -397,16 +426,29 @@ const BrandListPage: React.FC = () => {
           >
             Add Brand
           </Button>
-          <Button icon={<ReloadOutlined />} onClick={handleRefresh} loading={loadingStatus === "All"}>
+          <Button
+            icon={<ReloadOutlined />}
+            onClick={handleRefresh}
+            loading={loadingStatus === "All"}
+          >
             Refresh
           </Button>
-          <Button icon={<ClearOutlined />} onClick={handleClearCache} danger disabled={isLoading}>
+          <Button
+            icon={<ClearOutlined />}
+            onClick={handleClearCache}
+            danger
+            disabled={isLoading}
+          >
             Clear Cache
           </Button>
           <Tooltip title="Toggle cache usage">
             <div className="tw:flex tw:items-center tw:gap-2">
               <span>Use Cache:</span>
-              <Switch checked={useCache} onChange={setUseCache} disabled={isLoading} />
+              <Switch
+                checked={useCache}
+                onChange={setUseCache}
+                disabled={isLoading}
+              />
             </div>
           </Tooltip>
         </Space>

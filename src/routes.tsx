@@ -7,7 +7,7 @@ import NotFoundPage from "@pages/NotFound";
 const HomePage = lazy(() => import("@pages/Home"));
 const ReadPage = lazy(() => import("@pages/Read"));
 const RouterQuery = lazy(() => import("@pages/RouterQuery"));
-const BrandList = lazy(()=> import("@pages/BrandList"));
+const BrandList = lazy(() => import("@pages/BrandList"));
 const CurrentStockPage = lazy(() => import("@pages/CurrentStock"));
 // end this use code
 

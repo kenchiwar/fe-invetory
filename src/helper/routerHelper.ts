@@ -1,7 +1,6 @@
-
 import React from "react";
 import type { NavigateOptions } from "react-router-dom";
-import {  useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import * as JSURL from "jsurl";
 
 export function useQueryParam<T> (

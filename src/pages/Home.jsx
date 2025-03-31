@@ -1,5 +1,16 @@
 import { Helmet } from "react-helmet-async";
-import { Button, Typography, Card, Row, Col, Tag, Carousel, Rate, Badge, Space } from "antd";
+import {
+  Button,
+  Typography,
+  Card,
+  Row,
+  Col,
+  Tag,
+  Carousel,
+  Rate,
+  Badge,
+  Space
+} from "antd";
 import {
   ShoppingCartOutlined,
   PhoneOutlined,
@@ -29,7 +40,8 @@ export default function HomePage () {
     {
       id: 2,
       title: "Tờ rơi quảng cáo A5",
-      description: "In tờ rơi 2 mặt, giấy couche 150gsm, thiết kế chuyên nghiệp",
+      description:
+        "In tờ rơi 2 mặt, giấy couche 150gsm, thiết kế chuyên nghiệp",
       price: 800000,
       originalPrice: 950000,
       image: "/placeholder.svg?height=200&width=300",
@@ -112,7 +124,8 @@ export default function HomePage () {
       rating: 5
     },
     {
-      content: "Giá cả hợp lý, chất lượng tốt, giao hàng đúng hẹn. Đã sử dụng dịch vụ nhiều lần và luôn hài lòng.",
+      content:
+        "Giá cả hợp lý, chất lượng tốt, giao hàng đúng hẹn. Đã sử dụng dịch vụ nhiều lần và luôn hài lòng.",
       author: "Lê Văn C",
       company: "Cửa hàng DEF",
       rating: 4
@@ -121,7 +134,10 @@ export default function HomePage () {
 
   // Format price to VND
   const formatPrice = (price) => {
-    return new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" }).format(price);
+    return new Intl.NumberFormat("vi-VN", {
+      style: "currency",
+      currency: "VND"
+    }).format(price);
   };
 
   return (
@@ -133,7 +149,6 @@ export default function HomePage () {
           content="Dịch vụ in ấn chuyên nghiệp, chất lượng cao với giá cả cạnh tranh. Danh thiếp, tờ rơi, catalogue, hộp đựng sản phẩm và nhiều hơn nữa."
         />
       </Helmet>
-    
 
       {/* Hero Banner */}
       <Carousel autoplay className="tw:mb-8">
@@ -142,7 +157,8 @@ export default function HomePage () {
             <div
               className="tw:absolute tw:inset-0 tw:bg-cover tw:bg-center"
               style={{
-                backgroundImage: "url('/placeholder.svg?height=400&width=1200')",
+                backgroundImage:
+                  "url('/placeholder.svg?height=400&width=1200')",
                 filter: "brightness(0.7)"
               }}
             ></div>
@@ -150,12 +166,24 @@ export default function HomePage () {
               <Title level={1} style={{ color: "white", marginBottom: "1rem" }}>
                 Dịch Vụ In Ấn Chuyên Nghiệp
               </Title>
-              <Paragraph style={{ color: "white", fontSize: "1.2rem", maxWidth: "800px" }}>
-                Chúng tôi cung cấp dịch vụ in ấn chất lượng cao với giá cả cạnh tranh. Từ danh thiếp đến catalogue,
-                chúng tôi đáp ứng mọi nhu cầu in ấn của bạn.
+              <Paragraph
+                style={{
+                  color: "white",
+                  fontSize: "1.2rem",
+                  maxWidth: "800px"
+                }}
+              >
+                Chúng tôi cung cấp dịch vụ in ấn chất lượng cao với giá cả cạnh
+                tranh. Từ danh thiếp đến catalogue, chúng tôi đáp ứng mọi nhu
+                cầu in ấn của bạn.
               </Paragraph>
               <div className="tw:mt-6">
-                <Button type="primary" size="large" icon={<ShoppingCartOutlined />} className="tw:mr-4">
+                <Button
+                  type="primary"
+                  size="large"
+                  icon={<ShoppingCartOutlined />}
+                  className="tw:mr-4"
+                >
                   Đặt hàng ngay
                 </Button>
                 <Button size="large" icon={<PhoneOutlined />} ghost>
@@ -170,7 +198,8 @@ export default function HomePage () {
             <div
               className="tw:absolute tw:inset-0 tw:bg-cover tw:bg-center"
               style={{
-                backgroundImage: "url('/placeholder.svg?height=400&width=1200')",
+                backgroundImage:
+                  "url('/placeholder.svg?height=400&width=1200')",
                 filter: "brightness(0.7)"
               }}
             ></div>
@@ -178,8 +207,15 @@ export default function HomePage () {
               <Title level={1} style={{ color: "white", marginBottom: "1rem" }}>
                 Khuyến Mãi Đặc Biệt
               </Title>
-              <Paragraph style={{ color: "white", fontSize: "1.2rem", maxWidth: "800px" }}>
-                Giảm 20% cho tất cả đơn hàng in danh thiếp và tờ rơi trong tháng này. Đừng bỏ lỡ cơ hội!
+              <Paragraph
+                style={{
+                  color: "white",
+                  fontSize: "1.2rem",
+                  maxWidth: "800px"
+                }}
+              >
+                Giảm 20% cho tất cả đơn hàng in danh thiếp và tờ rơi trong tháng
+                này. Đừng bỏ lỡ cơ hội!
               </Paragraph>
               <div className="tw:mt-6">
                 <Button type="primary" size="large" danger>
@@ -207,7 +243,9 @@ export default function HomePage () {
                     className="tw:h-24 tw:flex tw:items-center tw:justify-center"
                     style={{ background: `${category.color}20` }}
                   >
-                    <PrinterOutlined style={{ fontSize: "2.5rem", color: category.color }} />
+                    <PrinterOutlined
+                      style={{ fontSize: "2.5rem", color: category.color }}
+                    />
                   </div>
                 }
               >
@@ -274,7 +312,10 @@ export default function HomePage () {
                           <Text delete type="secondary" className="tw:mr-2">
                             {formatPrice(product.originalPrice)}
                           </Text>
-                          <Text strong style={{ color: "#f5222d", fontSize: "1.1rem" }}>
+                          <Text
+                            strong
+                            style={{ color: "#f5222d", fontSize: "1.1rem" }}
+                          >
                             {formatPrice(product.price)}
                           </Text>
                         </div>
@@ -296,33 +337,65 @@ export default function HomePage () {
         <Row gutter={[32, 32]}>
           <Col xs={24} sm={12} lg={6}>
             <Card className="tw:h-full tw:text-center">
-              <CheckCircleOutlined style={{ fontSize: "3rem", color: "#52c41a", marginBottom: "1rem" }} />
+              <CheckCircleOutlined
+                style={{
+                  fontSize: "3rem",
+                  color: "#52c41a",
+                  marginBottom: "1rem"
+                }}
+              />
               <Title level={4}>Chất Lượng Cao</Title>
               <Paragraph>
-                Sử dụng công nghệ in hiện đại và vật liệu chất lượng cao để đảm bảo sản phẩm hoàn hảo.
+                Sử dụng công nghệ in hiện đại và vật liệu chất lượng cao để đảm
+                bảo sản phẩm hoàn hảo.
               </Paragraph>
             </Card>
           </Col>
           <Col xs={24} sm={12} lg={6}>
             <Card className="tw:h-full tw:text-center">
-              <RocketOutlined style={{ fontSize: "3rem", color: "#1677ff", marginBottom: "1rem" }} />
+              <RocketOutlined
+                style={{
+                  fontSize: "3rem",
+                  color: "#1677ff",
+                  marginBottom: "1rem"
+                }}
+              />
               <Title level={4}>Giao Hàng Nhanh</Title>
-              <Paragraph>Cam kết giao hàng đúng hẹn, thậm chí có dịch vụ giao hàng nhanh trong ngày.</Paragraph>
+              <Paragraph>
+                Cam kết giao hàng đúng hẹn, thậm chí có dịch vụ giao hàng nhanh
+                trong ngày.
+              </Paragraph>
             </Card>
           </Col>
           <Col xs={24} sm={12} lg={6}>
             <Card className="tw:h-full tw:text-center">
-              <StarOutlined style={{ fontSize: "3rem", color: "#faad14", marginBottom: "1rem" }} />
+              <StarOutlined
+                style={{
+                  fontSize: "3rem",
+                  color: "#faad14",
+                  marginBottom: "1rem"
+                }}
+              />
               <Title level={4}>Dịch Vụ Chuyên Nghiệp</Title>
-              <Paragraph>Đội ngũ tư vấn và thiết kế chuyên nghiệp, hỗ trợ khách hàng 24/7.</Paragraph>
+              <Paragraph>
+                Đội ngũ tư vấn và thiết kế chuyên nghiệp, hỗ trợ khách hàng
+                24/7.
+              </Paragraph>
             </Card>
           </Col>
           <Col xs={24} sm={12} lg={6}>
             <Card className="tw:h-full tw:text-center">
-              <EnvironmentOutlined style={{ fontSize: "3rem", color: "#eb2f96", marginBottom: "1rem" }} />
+              <EnvironmentOutlined
+                style={{
+                  fontSize: "3rem",
+                  color: "#eb2f96",
+                  marginBottom: "1rem"
+                }}
+              />
               <Title level={4}>Nhiều Chi Nhánh</Title>
               <Paragraph>
-                Có mặt tại nhiều tỉnh thành trên cả nước, thuận tiện cho việc đặt hàng và nhận hàng.
+                Có mặt tại nhiều tỉnh thành trên cả nước, thuận tiện cho việc
+                đặt hàng và nhận hàng.
               </Paragraph>
             </Card>
           </Col>
@@ -341,7 +414,10 @@ export default function HomePage () {
                 1
               </div>
               <Title level={4}>Tư Vấn & Báo Giá</Title>
-              <Paragraph>Liên hệ với chúng tôi để được tư vấn và nhận báo giá chi tiết cho sản phẩm của bạn.</Paragraph>
+              <Paragraph>
+                Liên hệ với chúng tôi để được tư vấn và nhận báo giá chi tiết
+                cho sản phẩm của bạn.
+              </Paragraph>
             </Card>
           </Col>
           <Col xs={24} sm={12} md={6}>
@@ -350,7 +426,10 @@ export default function HomePage () {
                 2
               </div>
               <Title level={4}>Thiết Kế & Duyệt Mẫu</Title>
-              <Paragraph>Đội ngũ thiết kế sẽ tạo mẫu và gửi cho bạn duyệt trước khi tiến hành in ấn.</Paragraph>
+              <Paragraph>
+                Đội ngũ thiết kế sẽ tạo mẫu và gửi cho bạn duyệt trước khi tiến
+                hành in ấn.
+              </Paragraph>
             </Card>
           </Col>
           <Col xs={24} sm={12} md={6}>
@@ -359,7 +438,10 @@ export default function HomePage () {
                 3
               </div>
               <Title level={4}>In Ấn & Gia Công</Title>
-              <Paragraph>Tiến hành in ấn và gia công sản phẩm theo yêu cầu với chất lượng cao nhất.</Paragraph>
+              <Paragraph>
+                Tiến hành in ấn và gia công sản phẩm theo yêu cầu với chất lượng
+                cao nhất.
+              </Paragraph>
             </Card>
           </Col>
           <Col xs={24} sm={12} md={6}>
@@ -368,7 +450,10 @@ export default function HomePage () {
                 4
               </div>
               <Title level={4}>Giao Hàng & Thanh Toán</Title>
-              <Paragraph>Giao hàng tận nơi và thanh toán linh hoạt theo nhiều hình thức khác nhau.</Paragraph>
+              <Paragraph>
+                Giao hàng tận nơi và thanh toán linh hoạt theo nhiều hình thức
+                khác nhau.
+              </Paragraph>
             </Card>
           </Col>
         </Row>
@@ -383,8 +468,14 @@ export default function HomePage () {
           {testimonials.map((testimonial, index) => (
             <Col xs={24} md={8} key={index}>
               <Card className="tw:h-full">
-                <Rate disabled defaultValue={testimonial.rating} className="tw:mb-4" />
-                <Paragraph className="tw:text-lg tw:italic">"{testimonial.content}"</Paragraph>
+                <Rate
+                  disabled
+                  defaultValue={testimonial.rating}
+                  className="tw:mb-4"
+                />
+                <Paragraph className="tw:text-lg tw:italic">
+                  "{testimonial.content}"
+                </Paragraph>
                 <div className="tw:mt-4">
                   <Text strong>{testimonial.author}</Text>
                   <br />
@@ -410,8 +501,9 @@ export default function HomePage () {
             Bắt Đầu Dự Án In Ấn Của Bạn Ngay Hôm Nay
           </Title>
           <Paragraph className="tw:text-lg tw:mb-6 tw:max-w-2xl tw:mx-auto">
-            Liên hệ với chúng tôi để được tư vấn miễn phí và nhận báo giá chi tiết cho dự án của bạn. Chúng tôi cam kết
-            mang đến sản phẩm chất lượng với giá cả cạnh tranh nhất.
+            Liên hệ với chúng tôi để được tư vấn miễn phí và nhận báo giá chi
+            tiết cho dự án của bạn. Chúng tôi cam kết mang đến sản phẩm chất
+            lượng với giá cả cạnh tranh nhất.
           </Paragraph>
           <Space size="large">
             <Button type="primary" size="large" icon={<PhoneOutlined />}>
@@ -452,4 +544,3 @@ export default function HomePage () {
     </>
   );
 }
-

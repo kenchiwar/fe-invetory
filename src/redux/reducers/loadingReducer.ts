@@ -2,8 +2,8 @@ import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import type { LoadingState } from "../types";
 
 interface LoadingSliceState {
-  status: LoadingState
-  entityType: string | null
+  status: LoadingState;
+  entityType: string | null;
 }
 
 const initialState: LoadingSliceState = {
@@ -15,7 +15,10 @@ const loadingSlice = createSlice({
   name: "loading",
   initialState,
   reducers: {
-    setLoading: (state, action: PayloadAction<{ status: LoadingState; entityType: string }>) => {
+    setLoading: (
+      state,
+      action: PayloadAction<{ status: LoadingState; entityType: string }>
+    ) => {
       state.status = action.payload.status;
       state.entityType = action.payload.entityType;
     },
@@ -28,4 +31,3 @@ const loadingSlice = createSlice({
 
 export const { setLoading, clearLoading } = loadingSlice.actions;
 export default loadingSlice.reducer;
-

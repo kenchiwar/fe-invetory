@@ -11,18 +11,15 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-     
       "@assets": path.resolve(__dirname, "./src/assets"),
       "@components": path.resolve(__dirname, "./src/components"),
-      "@redux" :  path.resolve(__dirname, "./src/redux"),
-      "@pages" : path.resolve(__dirname, "./src/pages"),
+      "@redux": path.resolve(__dirname, "./src/redux"),
+      "@pages": path.resolve(__dirname, "./src/pages"),
       "@": path.resolve(__dirname, "./src")
     }
   },
   // end setting alias
-  plugins: [react(),
-    tailwindcss()
-  ],
+  plugins: [react(), tailwindcss()],
   // tạo api backend đừng để bị cors  'Access-Control-Allow-Origin' header
   server: {
     proxy: {

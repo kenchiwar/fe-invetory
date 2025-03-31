@@ -48,6 +48,15 @@ export default tseslint.config(
         "warn",
         { allowConstantExport: true },
       ], // Cảnh báo nếu một component không được export đúng cách (cho React Fast Refresh)
+      //Logic ts 
+        // 🛑 Tắt cảnh báo thiếu dependencies trong useEffect
+        "react-hooks/exhaustive-deps": "off", 
+
+        // 🛑 Cho phép dùng any và unknown
+        "@typescript-eslint/no-explicit-any": "off",
+        // "@typescript-eslint/no-unsafe-argument": "off", // Liên quan đến unknown
+        // "@typescript-eslint/no-unsafe-assignment": "off", // Liên quan đến unknown
+        "no-console": ["error", { allow: ["error"] }],   // Thêm quy tắc này để cấm console trừ console.error
     },
   }
 );

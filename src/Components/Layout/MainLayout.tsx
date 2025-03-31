@@ -3,26 +3,29 @@
 import { useState, useEffect, Suspense } from "react";
 import { Outlet, Link, useLocation } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
-import { Layout, Menu, Button, Drawer, Space, Typography, Divider, Badge, Dropdown } from "antd";
+import {
+  Layout,
+  Menu,
+  Button,
+  Drawer,
+  Space,
+  Typography,
+  Divider,
+  Dropdown
+} from "antd";
 import {
   HomeOutlined,
   ReadOutlined,
   MenuOutlined,
-  BellOutlined,
   ShoppingOutlined,
-  MessageOutlined,
   SettingOutlined,
   UserOutlined,
   DatabaseOutlined
 } from "@ant-design/icons";
 
-
-
 import Loading from "@components/Loading";
 
-
 const { Header, Content, Footer } = Layout;
-const { Text } = Typography;
 
 function MainLayout () {
   const [mobileView, setMobileView] = useState(false);
@@ -39,7 +42,7 @@ function MainLayout () {
     if (path === "/") return ["home"];
     if (path === "/read") return ["read"];
     if (path === "/brands") return ["brands"];
-    if (path === "/notifications") return ["notifications"];
+    if (path === "/route") return ["route"];
     if (path === "/chat") return ["chat"];
     return [];
   };
@@ -71,11 +74,16 @@ function MainLayout () {
       label: <Link to="/read">Read</Link>
     },
     {
+      key: "route",
+      icon: <ReadOutlined />,
+      label: <Link to="/route">Read</Link>
+    },
+    {
       key: "brands",
       icon: <ShoppingOutlined />,
       label: <Link to="/brand">Brands</Link>
     },
- 
+
     {
       key: "current-stock",
       icon: <DatabaseOutlined />,
@@ -115,7 +123,12 @@ function MainLayout () {
               </Badge>
             </NotificationPopover> */}
 
-            <Button type="text" icon={<MenuOutlined />} onClick={toggleDrawer} style={{ color: "white" }} />
+            <Button
+              type="text"
+              icon={<MenuOutlined />}
+              onClick={toggleDrawer}
+              style={{ color: "white" }}
+            />
           </Space>
         ) : (
           <div className="tw:flex tw:items-center">
@@ -128,8 +141,6 @@ function MainLayout () {
             />
 
             <Space className="tw:ml-4">
-           
-
               <Dropdown
                 menu={{
                   items: [
@@ -155,7 +166,11 @@ function MainLayout () {
                 }}
                 placement="bottomRight"
               >
-                <Button type="text" icon={<UserOutlined />} style={{ color: "white" }} />
+                <Button
+                  type="text"
+                  icon={<UserOutlined />}
+                  style={{ color: "white" }}
+                />
               </Dropdown>
             </Space>
           </div>
@@ -163,8 +178,19 @@ function MainLayout () {
       </Header>
 
       {/* Mobile Drawer */}
-      <Drawer title="Menu" placement="right" onClose={toggleDrawer} open={drawerOpen} width={250}>
-        <Menu mode="vertical" selectedKeys={getSelectedKey()} items={menuItems} style={{ border: "none" }} />
+      <Drawer
+        title="Menu"
+        placement="right"
+        onClose={toggleDrawer}
+        open={drawerOpen}
+        width={250}
+      >
+        <Menu
+          mode="vertical"
+          selectedKeys={getSelectedKey()}
+          items={menuItems}
+          style={{ border: "none" }}
+        />
 
         <Divider />
 
@@ -207,11 +233,11 @@ function MainLayout () {
         <Divider />
         <Space direction="vertical" size="small">
           <Typography.Text>© 2025 - My React App 🚀</Typography.Text>
-          <Typography.Text type="secondary">Built with React, Vite, and Ant Design</Typography.Text>
+          <Typography.Text type="secondary">
+            Built with React, Vite, and Ant Design
+          </Typography.Text>
         </Space>
       </Footer>
-
-    
     </Layout>
   );
 }

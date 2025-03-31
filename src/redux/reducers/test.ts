@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
 export interface TestState {
-  value: number
+  value: number;
 }
 
 const initialState: TestState = {
@@ -14,7 +14,6 @@ export const testReducer = createSlice({
   initialState,
   reducers: {
     increment: (state) => {
-      
       state.value += 1;
     },
     decrement: (state) => {

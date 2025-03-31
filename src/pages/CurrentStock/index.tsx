@@ -2,7 +2,20 @@
 
 import type React from "react";
 import { useState, useEffect, useCallback } from "react";
-import { Table, Button, Space, message, Input, Modal, Form, InputNumber, Skeleton, Card, Row, Col } from "antd";
+import {
+  Table,
+  Button,
+  Space,
+  message,
+  Input,
+  Modal,
+  Form,
+  InputNumber,
+  Skeleton,
+  Card,
+  Row,
+  Col
+} from "antd";
 import {
   SearchOutlined,
   ReloadOutlined,
@@ -22,13 +35,16 @@ import {
   deleteCurrentStock,
   setSelectedCurrentStock
 } from "@/redux/reducers/currentStockReducer";
-import type { CurrentStock, CurrentStockDto } from "@/api/current-stock-service";
+import type {
+  CurrentStock,
+  CurrentStockDto
+} from "@/api/current-stock-service";
 import currentStockService from "@/api/current-stock-service";
 import { SortDirection } from "@/api/query-builder";
 
 interface SortState {
-  field: string
-  direction: SortDirection
+  field: string;
+  direction: SortDirection;
 }
 
 const CurrentStockPage: React.FC = () => {
@@ -39,7 +55,9 @@ const CurrentStockPage: React.FC = () => {
     selectedBrand: selectedCurrentStock,
     error
   } = useAppSelector((state) => state.currentStocks);
-  const { status: loadingStatus, entityType } = useAppSelector((state) => state.loading);
+  const { status: loadingStatus, entityType } = useAppSelector(
+    (state) => state.loading
+  );
 
   const isLoading = entityType === "currentStock" && loadingStatus !== "None";
 
@@ -52,8 +70,8 @@ const CurrentStockPage: React.FC = () => {
     direction: SortDirection.ASC
   });
   const [pagination, setPagination] = useState<{
-    current: number
-    pageSize: number
+    current: number;
+    pageSize: number;
   }>({
     current: 1,
     pageSize: 10
@@ -108,7 +126,10 @@ const CurrentStockPage: React.FC = () => {
         // Toggle direction if same field
         return {
           ...prevSort,
-          direction: prevSort.direction === SortDirection.ASC ? SortDirection.DESC : SortDirection.ASC
+          direction:
+            prevSort.direction === SortDirection.ASC
+              ? SortDirection.DESC
+              : SortDirection.ASC
         };
       } else {
         // Set new field and default to ASC
@@ -175,7 +196,9 @@ const CurrentStockPage: React.FC = () => {
       // Use the save action
       await dispatch(saveCurrentStock(values as CurrentStock)).unwrap();
 
-      message.success(`Current stock ${isEditing ? "updated" : "created"} successfully`);
+      message.success(
+        `Current stock ${isEditing ? "updated" : "created"} successfully`
+      );
       setIsModalVisible(false);
     } catch (error) {
       console.error("Failed to save current stock:", error);
@@ -207,12 +230,15 @@ const CurrentStockPage: React.FC = () => {
   );
 
   // Handle table pagination change
-  const handleTableChange = useCallback((tablePagination: TablePaginationConfig): void => {
-    setPagination({
-      current: tablePagination.current || 1,
-      pageSize: tablePagination.pageSize || 10
-    });
-  }, []);
+  const handleTableChange = useCallback(
+    (tablePagination: TablePaginationConfig): void => {
+      setPagination({
+        current: tablePagination.current || 1,
+        pageSize: tablePagination.pageSize || 10
+      });
+    },
+    []
+  );
 
   // Filter current stocks based on search text (searching in product ID)
   const filteredCurrentStocks =
@@ -227,7 +253,9 @@ const CurrentStockPage: React.FC = () => {
 
     // Handle string comparisons
     if (typeof aValue === "string" && typeof bValue === "string") {
-      return sort.direction === SortDirection.ASC ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue);
+      return sort.direction === SortDirection.ASC
+        ? aValue.localeCompare(bValue)
+        : bValue.localeCompare(aValue);
     }
 
     // Handle null values
@@ -237,7 +265,9 @@ const CurrentStockPage: React.FC = () => {
 
     // Handle numeric comparisons (this was missing)
     if (typeof aValue === "number" && typeof bValue === "number") {
-      return sort.direction === SortDirection.ASC ? aValue - bValue : bValue - aValue;
+      return sort.direction === SortDirection.ASC
+        ? aValue - bValue
+        : bValue - aValue;
     }
 
     // // Handle date comparisons
@@ -365,7 +395,9 @@ const CurrentStockPage: React.FC = () => {
             type="primary"
             icon={<EditOutlined />}
             onClick={() => showEditModal(record.id)}
-            loading={loadingStatus === "Get" && selectedCurrentStock?.id === record.id}
+            loading={
+              loadingStatus === "Get" && selectedCurrentStock?.id === record.id
+            }
           >
             Edit
           </Button>
@@ -373,7 +405,10 @@ const CurrentStockPage: React.FC = () => {
             danger
             icon={<DeleteOutlined />}
             onClick={() => handleDelete(record.id)}
-            loading={loadingStatus === "Delete" && selectedCurrentStock?.id === record.id}
+            loading={
+              loadingStatus === "Delete" &&
+              selectedCurrentStock?.id === record.id
+            }
           >
             Delete
           </Button>
@@ -421,10 +456,19 @@ const CurrentStockPage: React.FC = () => {
           >
             Add Current Stock
           </Button>
-          <Button icon={<ReloadOutlined />} onClick={handleRefresh} loading={loadingStatus === "All"}>
+          <Button
+            icon={<ReloadOutlined />}
+            onClick={handleRefresh}
+            loading={loadingStatus === "All"}
+          >
             Refresh
           </Button>
-          <Button icon={<ClearOutlined />} onClick={handleClearCache} danger disabled={isLoading}>
+          <Button
+            icon={<ClearOutlined />}
+            onClick={handleClearCache}
+            danger
+            disabled={isLoading}
+          >
             Clear Cache
           </Button>
         </Space>
@@ -476,20 +520,36 @@ const CurrentStockPage: React.FC = () => {
                 label="Product ID"
                 rules={[{ required: true, message: "Please enter Product ID" }]}
               >
-                <InputNumber style={{ width: "100%" }} min={1} placeholder="Enter Product ID" />
+                <InputNumber
+                  style={{ width: "100%" }}
+                  min={1}
+                  placeholder="Enter Product ID"
+                />
               </Form.Item>
             </Col>
             <Col span={12}>
               <Form.Item name="productVariantID" label="Product Variant ID">
-                <InputNumber style={{ width: "100%" }} min={1} placeholder="Enter Product Variant ID (Optional)" />
+                <InputNumber
+                  style={{ width: "100%" }}
+                  min={1}
+                  placeholder="Enter Product Variant ID (Optional)"
+                />
               </Form.Item>
             </Col>
           </Row>
 
           <Row gutter={16}>
             <Col span={12}>
-              <Form.Item name="uoMID" label="UoM ID" rules={[{ required: true, message: "Please enter UoM ID" }]}>
-                <InputNumber style={{ width: "100%" }} min={1} placeholder="Enter UoM ID" />
+              <Form.Item
+                name="uoMID"
+                label="UoM ID"
+                rules={[{ required: true, message: "Please enter UoM ID" }]}
+              >
+                <InputNumber
+                  style={{ width: "100%" }}
+                  min={1}
+                  placeholder="Enter UoM ID"
+                />
               </Form.Item>
             </Col>
             <Col span={12}>
@@ -514,14 +574,24 @@ const CurrentStockPage: React.FC = () => {
               <Form.Item
                 name="warehouseID"
                 label="Warehouse ID"
-                rules={[{ required: true, message: "Please enter Warehouse ID" }]}
+                rules={[
+                  { required: true, message: "Please enter Warehouse ID" }
+                ]}
               >
-                <InputNumber style={{ width: "100%" }} min={1} placeholder="Enter Warehouse ID" />
+                <InputNumber
+                  style={{ width: "100%" }}
+                  min={1}
+                  placeholder="Enter Warehouse ID"
+                />
               </Form.Item>
             </Col>
             <Col span={12}>
               <Form.Item name="storageBinID" label="Storage Bin ID">
-                <InputNumber style={{ width: "100%" }} min={1} placeholder="Enter Storage Bin ID (Optional)" />
+                <InputNumber
+                  style={{ width: "100%" }}
+                  min={1}
+                  placeholder="Enter Storage Bin ID (Optional)"
+                />
               </Form.Item>
             </Col>
           </Row>
@@ -532,6 +602,3 @@ const CurrentStockPage: React.FC = () => {
 };
 
 export default CurrentStockPage;
-
-
-

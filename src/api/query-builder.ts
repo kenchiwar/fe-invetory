@@ -3,38 +3,44 @@
  */
 export enum SortDirection {
   ASC = "asc",
-  DESC = "desc",
+  DESC = "desc"
 }
 
 /**
  * Interface for sort configuration
  */
 export interface SortConfig {
-  field: string
-  direction: SortDirection
+  field: string;
+  direction: SortDirection;
 }
 
 /**
  * Interface for filter range
  */
 export interface FilterRange {
-  min?: number | string | Date
-  max?: number | string | Date
+  min?: number | string | Date;
+  max?: number | string | Date;
 }
 
 /**
  * Interface for filter configuration
  */
 export interface FilterConfig {
-  [field: string]: string | number | boolean | Date | FilterRange | Array<string | number>
+  [field: string]:
+    | string
+    | number
+    | boolean
+    | Date
+    | FilterRange
+    | Array<string | number>;
 }
 
 /**
  * Interface for pagination configuration
  */
 export interface PaginationConfig {
-  skip?: number
-  take?: number
+  skip?: number;
+  take?: number;
 }
 
 /**
@@ -53,7 +59,10 @@ export class QueryBuilder {
    * @param field Field to sort by
    * @param direction Sort direction (asc or desc)
    */
-  sortBy (field: string, direction: SortDirection = SortDirection.ASC): QueryBuilder {
+  sortBy (
+    field: string,
+    direction: SortDirection = SortDirection.ASC
+  ): QueryBuilder {
     this._sort.push({ field, direction });
     return this;
   }
@@ -65,7 +74,13 @@ export class QueryBuilder {
    */
   filterBy (
     field: string,
-    value: string | number | boolean | Date | FilterRange | Array<string | number>
+    value:
+      | string
+      | number
+      | boolean
+      | Date
+      | FilterRange
+      | Array<string | number>
   ): QueryBuilder {
     this._filter[field] = value;
     return this;
@@ -77,7 +92,11 @@ export class QueryBuilder {
    * @param min Minimum value
    * @param max Maximum value
    */
-  filterByRange (field: string, min?: number | string | Date, max?: number | string | Date): QueryBuilder {
+  filterByRange (
+    field: string,
+    min?: number | string | Date,
+    max?: number | string | Date
+  ): QueryBuilder {
     this._filter[field] = { min, max };
     return this;
   }
@@ -136,7 +155,11 @@ export class QueryBuilder {
 
     // Add filter parameters
     for (const [key, value] of Object.entries(this._filter)) {
-      if (typeof value === "object" && !Array.isArray(value) && value !== null) {
+      if (
+        typeof value === "object" &&
+        !Array.isArray(value) &&
+        value !== null
+      ) {
         const range = value as FilterRange;
 
         if (range.min !== undefined) {
@@ -198,4 +221,3 @@ export class QueryBuilder {
     return new QueryBuilder();
   }
 }
-

@@ -1,10 +1,10 @@
 import { BaseService } from "./base-service";
 
 export interface CurrentStock {
-  id: number
-  productID: number
-  productVariantID: number | null
-  uoMID: number
+  id: number;
+  productID: number;
+  productVariantID: number | null;
+  uoMID: number;
   quantity: number;
   warehouseID: number;
   storageBinID: number | null;
@@ -13,7 +13,7 @@ export interface CurrentStock {
   createdDate: string;
   updatedBy: string;
   updatedDate: string;
-  CreatedBy : string;
+  CreatedBy: string;
   UpdatedBy: string;
 }
 
@@ -23,7 +23,7 @@ export interface CurrentStockDto {
   productVariantID: number | null;
   uoMID: number;
   quantity: number;
-  warehouseID: number
+  warehouseID: number;
   storageBinID: number | null;
 }
 
@@ -33,7 +33,9 @@ class CurrentStockService extends BaseService<CurrentStock> {
   }
 
   // Get all current stock items
-  async getAllCurrentStocks (config?: { cache?: boolean }): Promise<CurrentStock[]> {
+  async getAllCurrentStocks (config?: {
+    cache?: boolean;
+  }): Promise<CurrentStock[]> {
     return this.getAll(config);
   }
 
@@ -59,7 +61,7 @@ class CurrentStockService extends BaseService<CurrentStock> {
 
   // Clear current stock cache
   clearCurrentStockCache (): void {
-    console.log("Cache cleared for current stock");
+
   }
 }
 
@@ -67,4 +69,3 @@ class CurrentStockService extends BaseService<CurrentStock> {
 const currentStockService = new CurrentStockService();
 
 export default currentStockService;
-
