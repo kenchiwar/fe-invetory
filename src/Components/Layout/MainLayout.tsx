@@ -1,103 +1,81 @@
-"use client";
+"use client"
+import { useState, useEffect, Suspense } from "react"
+import { Outlet, Link, useLocation } from "react-router-dom"
+import { Helmet } from "react-helmet-async"
+import { Layout, Button, Drawer, Space, Typography, Divider, Dropdown, theme, Avatar, MenuProps } from "antd"
+import { MenuOutlined, SettingOutlined, UserOutlined, LogoutOutlined } from "@ant-design/icons"
 
-import { useState, useEffect, Suspense } from "react";
-import { Outlet, Link, useLocation } from "react-router-dom";
-import { Helmet } from "react-helmet-async";
-import {
-  Layout,
-  Menu,
-  Button,
-  Drawer,
-  Space,
-  Typography,
-  Divider,
-  Dropdown
-} from "antd";
-import {
-  HomeOutlined,
-  ReadOutlined,
-  MenuOutlined,
-  ShoppingOutlined,
-  SettingOutlined,
-  UserOutlined,
-  DatabaseOutlined
-} from "@ant-design/icons";
+import Loading from "@components/Loading"
+import PageErrorBoundary from "@pages/PageErrorBoundary"
+import LeftNavigation from "@/components/Navigation/LeftNavigation"
 
-import Loading from "@components/Loading";
+const { Header, Content, Footer, Sider } = Layout
+const { Text } = Typography
 
-const { Header, Content, Footer } = Layout;
-
-function MainLayout () {
-  const [mobileView, setMobileView] = useState(false);
-  const [drawerOpen, setDrawerOpen] = useState(false);
-  const location = useLocation();
-
-  // SignalR hook for notifications
-  // const { notifications, getUnreadCount } = useSignalR()
-
-  // Determine which menu item should be active based on current path
-  const getSelectedKey = () => {
-    const path = location.pathname;
-
-    if (path === "/") return ["home"];
-    if (path === "/read") return ["read"];
-    if (path === "/brands") return ["brands"];
-    if (path === "/route") return ["route"];
-    if (path === "/chat") return ["chat"];
-    return [];
-  };
+function MainLayout() {
+  const [collapsed, setCollapsed] = useState(false)
+  const [mobileView, setMobileView] = useState(false)
+  const [drawerOpen, setDrawerOpen] = useState(false)
+  const location = useLocation()
+  const { token } = theme.useToken()
 
   // Check if we're in mobile view
   useEffect(() => {
     const checkMobile = () => {
-      setMobileView(window.innerWidth < 768);
-    };
+      const isMobile = window.innerWidth < 768
+      setMobileView(isMobile)
+      if (isMobile) {
+        setCollapsed(true)
+      }
+    }
 
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
+    checkMobile()
+    window.addEventListener("resize", checkMobile)
 
     return () => {
-      window.removeEventListener("resize", checkMobile);
-    };
-  }, []);
-
-  // Menu items configuration
-  const menuItems = [
-    {
-      key: "home",
-      icon: <HomeOutlined />,
-      label: <Link to="/">Home</Link>
-    },
-    {
-      key: "read",
-      icon: <ReadOutlined />,
-      label: <Link to="/read">Read</Link>
-    },
-    {
-      key: "route",
-      icon: <ReadOutlined />,
-      label: <Link to="/route">Read</Link>
-    },
-    {
-      key: "brands",
-      icon: <ShoppingOutlined />,
-      label: <Link to="/brand">Brands</Link>
-    },
-
-    {
-      key: "current-stock",
-      icon: <DatabaseOutlined />,
-      label: <Link to="/current-stock">Current Stock</Link>
+      window.removeEventListener("resize", checkMobile)
     }
-  ];
+  }, [])
+
+  // User menu items
+  const userMenuItems: MenuProps["items"] = [
+    {
+      key: "profile",
+      label: <Link to="/profile">Profile</Link>,
+      icon: <UserOutlined />,
+    },
+    {
+      key: "settings",
+      label: <Link to="/settings">Settings</Link>,
+      icon: <SettingOutlined />,
+    },
+    {
+      type: "divider",
+    },
+    {
+      key: "logout",
+      label: "Logout",
+      icon: <LogoutOutlined />,
+      danger: true,
+    },
+  ]
+
 
   // Toggle drawer for mobile view
   const toggleDrawer = () => {
-    setDrawerOpen(!drawerOpen);
-  };
+    setDrawerOpen(!drawerOpen)
+  }
+
+  // Handle user menu click
+  const handleUserMenuClick = ({ key }: { key: string }) => {
+    if (key === "logout") {
+      // Handle logout logic here
+      console.log("Logout clicked")
+    }
+  }
 
   return (
-    <Layout className="tw:min-h-screen">
+    <Layout style={{ minHeight: "100vh" }}>
       <Helmet>
         <meta name="keywords" content="React, SEO, Helmet, Vite, TypeScript" />
         <meta property="og:title" content="Trang Chủ " />
@@ -105,141 +83,100 @@ function MainLayout () {
         <meta property="og:type" content="website" />
       </Helmet>
 
-      <Header
-        className="tw:flex tw:items-center tw:justify-between"
-        style={{ padding: mobileView ? "0 16px" : "0 50px" }}
-      >
-        <div className="tw:flex tw:items-center">
-          <Typography.Title level={4} style={{ margin: 0, color: "white" }}>
-            My App
-          </Typography.Title>
-        </div>
+      {/* Desktop Sidebar */}
+      {!mobileView && (
+        <Sider
+          collapsible
+          collapsed={collapsed}
+          onCollapse={(value) => setCollapsed(value)}
+          style={{
+            overflow: "auto",
+            height: "100vh",
+            position: "fixed",
+            left: 0,
+            top: 0,
+            bottom: 0,
+            zIndex: 1000,
+          }}
+        >
+          <LeftNavigation collapsed={collapsed} mobileView={false} />
+        </Sider>
+      )}
 
-        {mobileView ? (
-          <Space>
-            {/* <NotificationPopover>
-              <Badge count={getUnreadCount()} size="small">
-                <Button type="text" icon={<BellOutlined />} style={{ color: "white" }} />
-              </Badge>
-            </NotificationPopover> */}
-
-            <Button
-              type="text"
-              icon={<MenuOutlined />}
-              onClick={toggleDrawer}
-              style={{ color: "white" }}
-            />
-          </Space>
-        ) : (
+      <Layout style={{ marginLeft: mobileView ? 0 : collapsed ? 80 : 200, transition: "all 0.2s" }}>
+        <Header
+          style={{
+            padding: mobileView ? "0 16px" : "0 24px",
+            background: token.colorBgContainer,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            position: "sticky",
+            top: 0,
+            zIndex: 1,
+            width: "100%",
+            boxShadow: "0 1px 2px 0 rgba(0, 0, 0, 0.03)",
+          }}
+        >
           <div className="tw:flex tw:items-center">
-            <Menu
-              theme="dark"
-              mode="horizontal"
-              selectedKeys={getSelectedKey()}
-              items={menuItems}
-              style={{ minWidth: 280, flex: "auto" }}
-            />
-
-            <Space className="tw:ml-4">
-              <Dropdown
-                menu={{
-                  items: [
-                    {
-                      key: "profile",
-                      label: <Link to="/profile">Profile</Link>,
-                      icon: <UserOutlined />
-                    },
-                    {
-                      key: "settings",
-                      label: <Link to="/settings">Settings</Link>,
-                      icon: <SettingOutlined />
-                    },
-                    {
-                      type: "divider"
-                    },
-                    {
-                      key: "logout",
-                      label: "Logout",
-                      danger: true
-                    }
-                  ]
-                }}
-                placement="bottomRight"
-              >
-                <Button
-                  type="text"
-                  icon={<UserOutlined />}
-                  style={{ color: "white" }}
-                />
-              </Dropdown>
-            </Space>
+            {mobileView && (
+              <Button type="text" icon={<MenuOutlined />} onClick={toggleDrawer} style={{ marginRight: 12 }} />
+            )}
+            <Typography.Title level={4} style={{ margin: 0 }}>
+              {mobileView && "My App"}
+            </Typography.Title>
           </div>
-        )}
-      </Header>
 
-      {/* Mobile Drawer */}
-      <Drawer
-        title="Menu"
-        placement="right"
-        onClose={toggleDrawer}
-        open={drawerOpen}
-        width={250}
-      >
-        <Menu
-          mode="vertical"
-          selectedKeys={getSelectedKey()}
-          items={menuItems}
-          style={{ border: "none" }}
-        />
+          <Space>
+           <Dropdown menu={{ items: userMenuItems, onClick: handleUserMenuClick }} placement="bottomRight">
+              <Button type="text" className="tw:flex tw:items-center">
+                <Space>
+                  <Avatar icon={<UserOutlined />} />
+                  {!mobileView && <span>Admin User</span>}
+                </Space>
+              </Button>
+            </Dropdown>
+          </Space>
+        </Header>
 
-        <Divider />
+        {/* Mobile Drawer */}
+        <Drawer
+          title="Menu"
+          placement="left"
+          onClose={toggleDrawer}
+          open={mobileView && drawerOpen}
+          width={250}
+         
+        >
+          <LeftNavigation collapsed={false} mobileView={true} />
+        </Drawer>
 
-        <Menu
-          mode="vertical"
-          style={{ border: "none" }}
-          items={[
-            {
-              key: "profile",
-              label: <Link to="/profile">Profile</Link>,
-              icon: <UserOutlined />
-            },
-            {
-              key: "settings",
-              label: <Link to="/settings">Settings</Link>,
-              icon: <SettingOutlined />
-            },
-            {
-              type: "divider"
-            },
-            {
-              key: "logout",
-              label: "Logout",
-              danger: true,
-              icon: <UserOutlined />
-            }
-          ]}
-        />
-      </Drawer>
-
-      <Content className="tw:p-4 tw:mx-auto" style={{ maxWidth: 800 }}>
-        <div className="tw:bg-white tw:p-4 tw:min-h-[280px]">
+        <Content
+          style={{
+            margin: "24px 16px",
+            padding: 24,
+            background: token.colorBgContainer,
+            borderRadius: token.borderRadiusLG,
+            minHeight: 280,
+          }}
+        >
           <Suspense fallback={<Loading />}>
-            <Outlet />
+            <PageErrorBoundary>
+              <Outlet />
+            </PageErrorBoundary>
           </Suspense>
-        </div>
-      </Content>
+        </Content>
 
-      <Footer style={{ textAlign: "center" }}>
-        <Divider />
-        <Space direction="vertical" size="small">
-          <Typography.Text>© 2025 - My React App 🚀</Typography.Text>
-          <Typography.Text type="secondary">
-            Built with React, Vite, and Ant Design
-          </Typography.Text>
-        </Space>
-      </Footer>
+        <Footer style={{ textAlign: "center" }}>
+          <Divider />
+          <Space direction="vertical" size="small">
+            <Text>© 2025 - My React App 🚀</Text>
+            <Text type="secondary">Built with React, Vite, and Ant Design</Text>
+          </Space>
+        </Footer>
+      </Layout>
     </Layout>
-  );
+  )
 }
 
-export default MainLayout;
+export default MainLayout
