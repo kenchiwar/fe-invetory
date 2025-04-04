@@ -25,37 +25,48 @@ export const WEB_ENPOINT = {
     index: "/current-stock"
   },
 };
+export type HandleRoutes = {
+  pattern : string
+}
+
 
 const routes: RouteObject[] = [
   {
     path: ROUTES.APP_ROOT,
     element: <MainLayout />,
+    handle: { pattern: ROUTES.APP_ROOT }, // Handle cho layout cha
     children: [
       {
         index: true,
-        element: <HomePage />
+        element: <HomePage />,
+        handle: { pattern: WEB_ENPOINT.Home } 
       },
       {
         path: "read",
-        element: <ReadPage />
+        element: <ReadPage />,
+        handle: { pattern: WEB_ENPOINT.Read } 
       },
       {
         path: "route",
-        element: <RouterQuery />
+        element: <RouterQuery />,
+        handle: { pattern: WEB_ENPOINT.Route } 
       },
       // Brand routes
       {
         path: "Brand",
-        element: <BrandList />
+        element: <BrandList />,
+        handle: { pattern: WEB_ENPOINT.Brand.index }
       },
       {
         path: "Brand/:id",
-        element: <BrandDetail />
+        element: <BrandDetail />,
+        handle: { pattern: WEB_ENPOINT.Brand.id }
       },
       // Current Stock routes
       {
         path: "current-stock",
-        element: <CurrentStockPage />
+        element: <CurrentStockPage />,
+        handle: { pattern: WEB_ENPOINT.CurrentStock.index }
       }
     ]
   },
